@@ -139,10 +139,16 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_ClassWithIntAndNullableStringDefaults_ReturnsFub()
 		{
-
+			Create_WithIntAndNullableStringDefaults_ReturnsFub<Class>();
 		}
 
-		private void Create_ClassWithIntAndNullableStringDefaults_ReturnsFub<T>() where T : IStringIntMutable
+		[Fact]
+		public void Create_StructWithIntAndNullableStringDefaults_ReturnsFub()
+		{
+			Create_WithIntAndNullableStringDefaults_ReturnsFub<Struct>();
+		}
+
+		private void Create_WithIntAndNullableStringDefaults_ReturnsFub<T>() where T : IStringIntMutable
 		{
 			FubBuilder<T> builder = new();
 
