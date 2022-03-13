@@ -7,5 +7,8 @@ namespace Fub.Creation
 	{
 		IConstructorResolver CreateConstructorResolver<T>();
 		IConstructorResolver CreateConstructorResolver(Type type);
+
+		void RegisterResolver<T>(IConstructorResolver resolver);
+		void RegisterResolver(Type type, IConstructorResolver resolver);
 	}
 }

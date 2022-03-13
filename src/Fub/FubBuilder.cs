@@ -1,8 +1,10 @@
 ﻿using Fub.Creation;
+using Fub.Creation.ConstructorResolvers;
 using Fub.Prospects;
 using Fub.ValueProvisioning;
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Fub
 {
@@ -48,12 +50,16 @@ namespace Fub
 			return this;
 		}
 
-		public IFubBuilder<T> UseConstructor<TConstructor>(Expression<Func<T, TConstructor>> expression)
+		public IFubBuilder<T> UseConstructor(ConstructorInfo constructor)
 		{
-			throw new NotImplementedException();
+			FixedConstructorResolver resolver = new(constructor);
+
+			ConstructorResolverFactory.RegisterResolver<T>(resolver);
+
+			return this;
 		}
 
-		public IFubBuilder<T> UseConstructor<TOtherType, TConstructor>(Expression<Func<TOtherType, TConstructor>> expression)
+		public IFubBuilder<T> UseConstructor<TOtherType>(ConstructorInfo constructor)
 		{
 			throw new NotImplementedException();
 		}

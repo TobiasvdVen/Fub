@@ -1,6 +1,7 @@
 ﻿using Fub.Creation;
 using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Fub
 {
@@ -8,8 +9,8 @@ namespace Fub
 	{
 		IFubBuilder<T> UseCreator(ICreator creator);
 		IFubBuilder<T> WithDefault<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value);
-		IFubBuilder<T> UseConstructor<TConstructor>(Expression<Func<T, TConstructor>> expression);
-		IFubBuilder<T> UseConstructor<TOtherType, TConstructor>(Expression<Func<TOtherType, TConstructor>> expression);
+		IFubBuilder<T> UseConstructor(ConstructorInfo constructor);
+		IFubBuilder<T> UseConstructor<TOtherType>(ConstructorInfo constructor);
 
 		Fub<T> Build();
 	}
