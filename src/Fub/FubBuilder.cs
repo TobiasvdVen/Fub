@@ -12,6 +12,13 @@ namespace Fub
 	{
 		public FubBuilder()
 		{
+			Type type = typeof(T);
+
+			if (type.IsInterface)
+			{
+				throw new InvalidOperationException($"Only concrete types can be Fubbed, {type.Name} is an interface.");
+			}
+
 			DefaultValues = new ProspectValues();
 			ConstructorResolverFactory = new ConstructorResolverFactory();
 		}

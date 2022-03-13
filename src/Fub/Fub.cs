@@ -13,6 +13,13 @@ namespace Fub
 
 		public Fub(ICreator creator, IProspectValues defaultValues)
 		{
+			Type type = typeof(T);
+
+			if (type.IsInterface)
+			{
+				throw new InvalidOperationException($"Only concrete types can be Fubbed, {type.Name} is an interface.");
+			}
+
 			this.creator = creator;
 			this.defaultValues = defaultValues;
 		}
