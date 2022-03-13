@@ -7,3 +7,4 @@ src/Fub.Tests/bin
 src/Fub.Tests/obj
 src/Fub.InternalTests/bin
 src/Fub.InternalTests/obj
+nCrunchTemp*
