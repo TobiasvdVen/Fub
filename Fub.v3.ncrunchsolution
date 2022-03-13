@@ -3,4 +3,15 @@
     <AllowParallelTestExecution>True</AllowParallelTestExecution>
     <SolutionConfigured>True</SolutionConfigured>
   </Settings>
+  <EngineModes>
+    <EngineMode>
+      <Name>Run only .NET 6 tests automatically</Name>
+      <Settings>
+        <ShowCoverageForTests>HasCategory 'net6.0'</ShowCoverageForTests>
+        <ShowMetricsForTests>HasCategory 'net6.0'</ShowMetricsForTests>
+        <TestFilter>HasCategory 'net6.0'</TestFilter>
+        <TestsToExecuteAutomatically>HasCategory 'net6.0'</TestsToExecuteAutomatically>
+      </Settings>
+    </EngineMode>
+  </EngineModes>
 </SolutionConfiguration>
