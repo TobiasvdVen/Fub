@@ -66,5 +66,17 @@ namespace Fub.Tests
 			Assert.Equal(default, created.Simple.Boolean);
 			Assert.NotNull(created.Simple.Empty);
 		}
+
+		[Fact]
+		public void Create_HasSimpleNestedType_WithSimpleOverride_ReturnsFub()
+		{
+			FubBuilder<HasSimpleNestedType> builder = new();
+			Fub<HasSimpleNestedType> fub = builder.Build();
+
+			HasSimpleNestedType created = fub.Create(h => h.Simple, new Simple("Barney", true, new Empty()));
+
+			Assert.Equal("Barney", created.Simple.Name);
+			Assert.Equal(true, created.Simple.Boolean);
+		}
 	}
 }

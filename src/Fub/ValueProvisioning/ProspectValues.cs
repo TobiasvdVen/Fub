@@ -36,6 +36,14 @@ namespace Fub.ValueProvisioning
 		public bool TryGetProvider(Prospect prospect, out IValueProvider? valueProvider)
 #endif
 		{
+			if (prospect is ParameterProspect parameterProspect)
+			{
+				if (parameterProspect.MatchingMember != null)
+				{
+					return valueProviders.TryGetValue(Prospect.FromMember(parameterProspect.MatchingMember!), out valueProvider);
+				}
+			}
+
 			return valueProviders.TryGetValue(prospect, out valueProvider);
 		}
 	}
