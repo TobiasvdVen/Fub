@@ -13,6 +13,8 @@ namespace Fub.Creation.ConstructorResolvers
 			this.type = type;
 		}
 
+		protected Type Type => type;
+
 		public virtual ConstructorInfo? Resolve()
 		{
 			ConstructorInfo[] constructors = type.GetConstructors();
@@ -20,6 +22,11 @@ namespace Fub.Creation.ConstructorResolvers
 			if (constructors.Length == 1)
 			{
 				return constructors.Single();
+			}
+
+			if (constructors.Length > 1)
+			{
+				throw new InvalidOperationException($"Unable to create {type.Name}, multiple constructor options found. Call UseConstructor() during Build to specify which constructor to use.");
 			}
 
 			return null;

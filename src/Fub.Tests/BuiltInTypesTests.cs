@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace Fub.Tests
 {
@@ -23,11 +24,12 @@ namespace Fub.Tests
 			ushort UShort { get; }
 			object Object { get; }
 			string String { get; }
+			DateTime DateTime { get; }
 		}
 
 		public class Class : IBuiltInTypes
 		{
-			public Class(bool @bool, byte @byte, sbyte sByte, char @char, decimal @decimal, double @double, float @float, int @int, uint uInt, nint nInt, nuint nUInt, long @long, ulong uLong, short @short, ushort uShort, object @object, string @string)
+			public Class(bool @bool, byte @byte, sbyte sByte, char @char, decimal @decimal, double @double, float @float, int @int, uint uInt, nint nInt, nuint nUInt, long @long, ulong uLong, short @short, ushort uShort, object @object, string @string, DateTime dateTime)
 			{
 				Bool = @bool;
 				Byte = @byte;
@@ -46,6 +48,7 @@ namespace Fub.Tests
 				UShort = uShort;
 				Object = @object;
 				String = @string;
+				DateTime = dateTime;
 			}
 
 			public bool Bool { get; }
@@ -65,6 +68,7 @@ namespace Fub.Tests
 			public ushort UShort { get; }
 			public object Object { get; }
 			public string String { get; }
+			public DateTime DateTime { get; }
 		}
 
 		public class MostlyMutableClass : IBuiltInTypes
@@ -92,6 +96,7 @@ namespace Fub.Tests
 			public ushort UShort { get; set; }
 			public object Object { get; }
 			public string String { get; }
+			public DateTime DateTime { get; }
 		}
 
 		[Fact]
@@ -133,6 +138,8 @@ namespace Fub.Tests
 
 			Assert.NotNull(created.String);
 			Assert.Equal(string.Empty, created.String);
+
+			Assert.Equal(default, created.DateTime);
 		}
 	}
 }

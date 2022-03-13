@@ -10,6 +10,8 @@ namespace Fub
 {
 	public class FubBuilder<T> : IFubBuilder<T> where T : notnull
 	{
+		private readonly IConstructorResolverFactory constructorResolverFactory;
+
 		public FubBuilder()
 		{
 			Type type = typeof(T);
@@ -19,19 +21,18 @@ namespace Fub
 				throw new InvalidOperationException($"Only concrete types can be Fubbed, {type.Name} is an interface.");
 			}
 
+			constructorResolverFactory = new ConstructorResolverFactory();
+
 			DefaultValues = new ProspectValues();
-			ConstructorResolverFactory = new ConstructorResolverFactory();
 		}
 
 		public ICreator? Creator { get; private set; }
 
 		public IProspectValues DefaultValues { get; }
 
-		public IConstructorResolverFactory ConstructorResolverFactory { get; }
-
 		public Fub<T> Build()
 		{
-			ICreator creator = Creator ?? new Creator(ConstructorResolverFactory, new Prospector());
+			ICreator creator = Creator ?? new Creator(constructorResolverFactory, new Prospector());
 
 			return new Fub<T>(creator, DefaultValues);
 		}
@@ -61,7 +62,7 @@ namespace Fub
 		{
 			FixedConstructorResolver resolver = new(constructor);
 
-			ConstructorResolverFactory.RegisterResolver<T>(resolver);
+			constructorResolverFactory.RegisterResolver<T>(resolver);
 
 			return this;
 		}

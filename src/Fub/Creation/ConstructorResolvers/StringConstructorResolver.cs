@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Fub.Creation.ConstructorResolvers
 {
-	internal class StringConstructorResolver : HeuristicConstructorResolver
+	internal class StringConstructorResolver : IConstructorResolver
 	{
-		public StringConstructorResolver() : base(typeof(string))
+		ConstructorInfo constructor;
+
+		public StringConstructorResolver()
 		{
+			ConstructorInfo[] constructors = typeof(string).GetConstructors();
+
+			constructor = constructors.FirstOrDefault() ?? typeof(string).GetConstructor(new Type[] { typeof(char[]) })!;
 		}
 
-		public override ConstructorInfo? Resolve()
+		public ConstructorInfo? Resolve()
 		{
-			ConstructorInfo? constructor = base.Resolve();
-
-			return constructor ?? typeof(string).GetConstructor(new Type[] { typeof(char[]) });
+			return constructor;
 		}
 	}
 }

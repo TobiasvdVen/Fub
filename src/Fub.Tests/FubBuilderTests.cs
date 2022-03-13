@@ -2,7 +2,6 @@
 using Fub.ValueProvisioning;
 using Moq;
 using System;
-using System.Reflection;
 using Xunit;
 
 namespace Fub.Tests
@@ -80,34 +79,6 @@ namespace Fub.Tests
 			FubBuilder<Goodbye> builder = new();
 
 			Assert.Throws<ArgumentException>(() => builder.WithDefault(g => "", ""));
-		}
-
-		public class TwoConstructors
-		{
-			public TwoConstructors()
-			{
-				Value = 1;
-			}
-
-			public TwoConstructors(int value)
-			{
-				Value = value;
-			}
-
-			public int Value { get; }
-		}
-
-		[Fact]
-		public void Build_WithConstructor_InjectsConstructor()
-		{
-			FubBuilder<TwoConstructors> builder = new();
-
-			ConstructorInfo intConstructor = typeof(TwoConstructors).GetConstructor(new Type[] { typeof(int) })!;
-			Fub<TwoConstructors> fub = builder.UseConstructor(intConstructor).Build();
-
-			TwoConstructors created = fub.Create();
-
-			Assert.Equal(0, created.Value);
 		}
 	}
 }

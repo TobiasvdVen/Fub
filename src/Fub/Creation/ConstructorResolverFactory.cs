@@ -12,8 +12,14 @@ namespace Fub.Creation
 		{
 		}
 
-		public ConstructorResolverFactory(IDictionary<Type, IConstructorResolver> resolvers)
+		private ConstructorResolverFactory(IDictionary<Type, IConstructorResolver> resolvers)
 		{
+			resolvers.Add(typeof(string), new StringConstructorResolver());
+			resolvers.Add(typeof(decimal), new DecimalConstructorResolver());
+			resolvers.Add(typeof(IntPtr), new IntPtrConstructorResolver());
+			resolvers.Add(typeof(UIntPtr), new UIntPtrConstructorResolver());
+			resolvers.Add(typeof(DateTime), new DateTimeConstructorResolver());
+
 			this.resolvers = resolvers;
 		}
 
@@ -27,11 +33,6 @@ namespace Fub.Creation
 			if (resolvers.TryGetValue(type, out IConstructorResolver? resolver))
 			{
 				return resolver;
-			}
-
-			if (type == typeof(string))
-			{
-				return new StringConstructorResolver();
 			}
 
 			return new HeuristicConstructorResolver(type);
