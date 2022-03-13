@@ -30,5 +30,10 @@ namespace Fub.Prospects
 
 			throw new ArgumentException($"Member must be either {nameof(PropertyInfo)} or {nameof(FieldInfo)}, but was {member.GetType()}.");
 		}
+
+		public override int GetHashCode()
+		{
+			return new { Nullable, Initialization, Type }.GetHashCode();
+		}
 	}
 }

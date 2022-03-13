@@ -15,7 +15,7 @@ namespace Fub.ValueProvisioning
 		{
 		}
 
-		public ProspectValues(IDictionary<Prospect, IValueProvider> valueProviders)
+		private ProspectValues(IDictionary<Prospect, IValueProvider> valueProviders)
 		{
 			this.valueProviders = valueProviders;
 		}

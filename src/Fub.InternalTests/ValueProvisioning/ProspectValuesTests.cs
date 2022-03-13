@@ -48,7 +48,7 @@ namespace Fub.InternalTests.ValueProvidersTests
 		}
 
 		[Fact]
-		public void TryGetProvider_WithConcreteProspect_WhenSetWithInterface_ReturnsTrue()
+		public void TryGetProvider_WithConcreteProspect_WhenSetWithInterfaceProspect_ReturnsTrue()
 		{
 			ProspectValues prospectValues = new ProspectValues();
 
@@ -61,6 +61,48 @@ namespace Fub.InternalTests.ValueProvidersTests
 			prospectValues.SetProvider(interfaceProspect, new FixedValueProvider(true));
 
 			Assert.True(prospectValues.TryGetProvider(classProspect, out IValueProvider? valueProvider));
+		}
+
+		public class Other
+		{
+			public bool SomeBoolean { get; }
+		}
+
+		[Fact]
+		public void TryGetProvider_WithProspect_WhenSetWithOtherTypeProspect_ReturnsFalse()
+		{
+			ProspectValues prospectValues = new ProspectValues();
+
+			PropertyInfo property = typeof(Base).GetProperty(nameof(Base.SomeBoolean))!;
+			PropertyInfo otherProperty = typeof(Other).GetProperty(nameof(Other.SomeBoolean))!;
+
+			Prospect prospect = new PropertyProspect(property);
+			Prospect otherProspect = new PropertyProspect(otherProperty);
+
+			prospectValues.SetProvider(prospect, new FixedValueProvider(true));
+
+			Assert.False(prospectValues.TryGetProvider(otherProspect, out IValueProvider? valueProvider));
+		}
+
+		public class OtherButSameInterface : IBase
+		{
+			public bool SomeBoolean { get; }
+		}
+
+		[Fact]
+		public void TryGetProvider_WithProspect_WhenSetWithOtherTypeProspectButSameInterface_ReturnsFalse()
+		{
+			ProspectValues prospectValues = new ProspectValues();
+
+			PropertyInfo property = typeof(Base).GetProperty(nameof(Base.SomeBoolean))!;
+			PropertyInfo otherProperty = typeof(OtherButSameInterface).GetProperty(nameof(OtherButSameInterface.SomeBoolean))!;
+
+			Prospect prospect = new PropertyProspect(property);
+			Prospect otherProspect = new PropertyProspect(otherProperty);
+
+			prospectValues.SetProvider(prospect, new FixedValueProvider(true));
+
+			Assert.False(prospectValues.TryGetProvider(otherProspect, out IValueProvider? valueProvider));
 		}
 	}
 }
