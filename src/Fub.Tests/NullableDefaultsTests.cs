@@ -27,7 +27,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenConstructorThenDefaultMembersAccordingToNullability()
+		public void Create_ClassWithConstructor_ReturnsFubWithMembersAccordingToNullability()
 		{
 			Fub<Constructor> fub = new FubBuilder<Constructor>().Build();
 
@@ -49,7 +49,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenNoConstructorThenDefaultMembersAccordingToNullability()
+		public void Create_ClassWithNoConstructor_ReturnsFubWithMembersAccordingToNullability()
 		{
 			Fub<Mutable> fub = new FubBuilder<Mutable>().Build();
 

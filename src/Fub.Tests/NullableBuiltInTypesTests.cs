@@ -110,19 +110,19 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenClassWhenNoOverridesThenCreateDefault()
+		public void Create_ClassWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<Class>();
 		}
 
 		[Fact]
-		public void GivenMostlyMutableClassWhenNoOverridesThenCreateDefault()
+		public void Create_MutableClassWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<MutableClass>();
 		}
 
 		[Fact]
-		public void GivenClassWithConstructorWhenNoOverridesThenCreateDefault()
+		public void Create_ClassWithConstructorWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<ClassWithConstructor>();
 		}
@@ -139,13 +139,13 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenRecordWhenNoOverridesThenCreateDefault()
+		public void Create_RecordWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<Record>();
 		}
 
 		[Fact]
-		public void GivenRecordStructWhenNoOverridesThenCreateDefault()
+		public void Create_RecordStructWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<RecordStruct>();
 		}

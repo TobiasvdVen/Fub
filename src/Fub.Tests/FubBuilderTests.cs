@@ -1,6 +1,8 @@
 ﻿using Fub.Creation;
 using Fub.ValueProvisioning;
+using Moq;
 using System;
+using System.Reflection;
 using Xunit;
 
 namespace Fub.Tests
@@ -13,7 +15,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenBuilderWhenBuildThenReturnDefaultFub()
+		public void Build_Default_ReturnsFub()
 		{
 			FubBuilder<SimpleCreateable> builder = new();
 
@@ -24,38 +26,17 @@ namespace Fub.Tests
 			Assert.NotNull(created);
 		}
 
-		private class CustomCreator : ICreator
-		{
-			public object? Create(Type type, IProspectValues memberValues)
-			{
-				throw new NotImplementedException("ShouldBuildCustomCreator");
-			}
-
-			public T Create<T>(IProspectValues memberValues) where T : notnull
-			{
-				throw new NotImplementedException("ShouldBuildCustomCreator");
-			}
-
-			public T Create<T>() where T : notnull
-			{
-				throw new NotImplementedException("ShouldBuildCustomCreator");
-			}
-
-			public object? Create(Type type)
-			{
-				throw new NotImplementedException("ShouldBuildCustomCreator");
-			}
-		}
-
 		[Fact]
-		public void GivenBuilderWithCustomCreatorWhenBuildThenReturnFub()
+		public void Build_WithCustomCreator_InjectsCreator()
 		{
 			FubBuilder<SimpleCreateable> builder = new();
+			Mock<ICreator> creator = new();
 
-			Fub<SimpleCreateable> fub = builder.UseCreator(new CustomCreator()).Build();
+			Fub<SimpleCreateable> fub = builder.UseCreator(creator.Object).Build();
 
-			NotImplementedException ex = Assert.Throws<NotImplementedException>(() => fub.Create());
-			Assert.Equal("ShouldBuildCustomCreator", ex.Message);
+			fub.Create();
+
+			creator.Verify(c => c.Create<SimpleCreateable>(It.IsAny<IProspectValues>()));
 		}
 
 		public class SomeClass
@@ -65,7 +46,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenBuilderWithSpecifiedDefaultsWhenBuildThenReturnFub()
+		public void Build_WithTwoDefaults_ReturnsFub()
 		{
 			FubBuilder<SomeClass> builder = new();
 
@@ -94,11 +75,39 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenExpressionWhenNotPropertyOrFieldThenThrow()
+		public void WithDefault_InvalidExpression_Throws()
 		{
 			FubBuilder<Goodbye> builder = new();
 
 			Assert.Throws<ArgumentException>(() => builder.WithDefault(g => "", ""));
+		}
+
+		public class TwoConstructors
+		{
+			public TwoConstructors()
+			{
+				Value = 1;
+			}
+
+			public TwoConstructors(int value)
+			{
+				Value = value;
+			}
+
+			public int Value { get; }
+		}
+
+		[Fact]
+		public void Build_WithConstructor_InjectsConstructor()
+		{
+			FubBuilder<TwoConstructors> builder = new();
+
+			ConstructorInfo intConstructor = typeof(TwoConstructors).GetConstructor(new Type[] { typeof(int) })!;
+			Fub<TwoConstructors> fub = builder.UseConstructor(intConstructor).Build();
+
+			TwoConstructors created = fub.Create();
+
+			Assert.Equal(0, created.Value);
 		}
 	}
 }

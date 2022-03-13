@@ -35,13 +35,13 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenClassWhenNoOverrideThenCreateDefault()
+		public void Create_ClassWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<Class>();
 		}
 
 		[Fact]
-		public void GivenStructWhenNoOverrideThenCreateDefault()
+		public void Create_StructWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<Struct>();
 		}
@@ -58,13 +58,13 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenRecordWhenNoOverrideThenCreateDefault()
+		public void Create_RecordWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<Record>();
 		}
 
 		[Fact]
-		public void GivenRecordStructWhenNoOverrideThenCreateDefault()
+		public void Create_RecordStructWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<RecordStruct>();
 		}
@@ -89,7 +89,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenStructWithNoConstructorWhenNoOverrideThenCreateDefault()
+		public void Create_StructWithNoConstructorWithNoOverrides_ReturnsDefault()
 		{
 			FubBuilder<StructWithNoConstructor> builder = new();
 			Fub<StructWithNoConstructor> fub = builder.Build();

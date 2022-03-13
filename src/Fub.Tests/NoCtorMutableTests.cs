@@ -13,7 +13,7 @@ namespace Fub.Tests
 		private readonly Fub<NoCtorMutable> noCtorMutable = new FubBuilder<NoCtorMutable>().Build();
 
 		[Fact]
-		public void ShouldCreateDefault()
+		public void Create_ClassWithNoOverrides_ReturnsDefault()
 		{
 			NoCtorMutable created = noCtorMutable.Create();
 
@@ -23,7 +23,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void ShouldCreateWithName()
+		public void Create_ClassWithNullableStringOverride_ReturnsFub()
 		{
 			string expectedName = "Henry";
 
@@ -33,7 +33,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void ShouldCreateWithAge()
+		public void Create_ClassWithIntOverride_ReturnsFub()
 		{
 			int expectedAge = 32;
 
@@ -43,7 +43,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void ShouldCreateWithNullName()
+		public void Create_ClassWithNullableStringOverrideToNull_ReturnsFub()
 		{
 			NoCtorMutable created = noCtorMutable.Create(m => m.Name, null);
 
@@ -51,7 +51,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void ShouldCreateWithNameAndAge()
+		public void Create_ClassWithIntAndNullableStringOverrides_ReturnsFub()
 		{
 			string expectedName = "Thomas";
 			int expectedAge = 42;
@@ -65,7 +65,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void ShouldCreateWithSpecifiedDefaults()
+		public void Create_ClassWithIntAndNullableStringDefaults_ReturnsFub()
 		{
 			FubBuilder<NoCtorMutable> builder = new();
 

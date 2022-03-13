@@ -95,13 +95,13 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenClassWhenNoOverridesThenCreateDefault()
+		public void Create_ClassWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<Class>();
 		}
 
 		[Fact]
-		public void GivenMostlyMutableClassWhenNoOverridesThenCreateDefault()
+		public void Create_MostlyMutableClassWithNoOverrides_ReturnsDefault()
 		{
 			CreateAndAssertDefault<MostlyMutableClass>();
 		}

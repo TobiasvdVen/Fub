@@ -18,13 +18,13 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenClassThenShouldCreate()
+		public void Create_Class_ReturnsDefault()
 		{
 			CreateAndAssert<Class>();
 		}
 
 		[Fact]
-		public void GivenStructThenShouldCreate()
+		public void Create_Struct_ReturnsDefault()
 		{
 			CreateAndAssert<Struct>();
 		}
@@ -41,7 +41,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenRecordThenCreate()
+		public void Create_Record_ReturnsDefault()
 		{
 			CreateAndAssert<Record>();
 		}
@@ -49,7 +49,7 @@ namespace Fub.Tests
 
 
 		[Fact]
-		public void GivenRecordStructThenCreate()
+		public void Create_RecordStruct_ReturnsDefault()
 		{
 			CreateAndAssert<RecordStruct>();
 		}

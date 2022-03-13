@@ -15,7 +15,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void GivenFubWhenCreatingNonPropertyOrFieldExpressionThenThrow()
+		public void Create_WithNonPropertyOrFieldExpression_Throws()
 		{
 			Fub<HiThere> fub = new FubBuilder<HiThere>().Build();
 
