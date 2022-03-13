@@ -41,8 +41,7 @@ namespace Fub.Tests
 
 			IStringIntMutable created = fub.Create();
 
-			Assert.NotNull(created.String);
-			Assert.Equal(string.Empty, created.String);
+			Assert.Null(created.String);
 			Assert.Equal(default, created.Integer);
 		}
 
