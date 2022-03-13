@@ -14,16 +14,14 @@ namespace Fub.Prospects
 
 		public override int GetHashCode()
 		{
-			int h = MemberInfo.GetHashCode();
-
-			return h;
+			return new { MemberInfo.Name }.GetHashCode();
 		}
 
 		public override bool Equals(object? obj)
 		{
 			if (obj is MemberProspect other)
 			{
-				return MemberInfo.Equals(other.MemberInfo);
+				return other.GetHashCode() == GetHashCode();
 			}
 
 			return false;

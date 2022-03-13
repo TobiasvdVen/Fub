@@ -6,27 +6,23 @@ namespace Fub.InternalTests.ValueProvidersTests
 	public class FixedValueProviderTests
 	{
 		[Fact]
-		public void GivenIntValueThenReturnValue()
+		public void GetValue_WithFixedInteger_ReturnsInteger()
 		{
-			int value = 64;
+			IValueProvider valueProvider = new FixedValueProvider(64);
 
-			IValueProvider valueProvider = new FixedValueProvider(value);
-
-			Assert.Equal(value, valueProvider.GetValue());
+			Assert.Equal(64, valueProvider.GetValue());
 		}
 
 		[Fact]
-		public void GivenStringValueThenReturnValue()
+		public void GetValue_WithFixedString_ReturnsString()
 		{
-			string value = "Supercalifragilisticexpidalidocious";
+			IValueProvider valueProvider = new FixedValueProvider("Supercalifragilisticexpidalidocious");
 
-			IValueProvider valueProvider = new FixedValueProvider(value);
-
-			Assert.Equal(value, valueProvider.GetValue());
+			Assert.Equal("Supercalifragilisticexpidalidocious", valueProvider.GetValue());
 		}
 
 		[Fact]
-		public void GivenNullThenReturnNull()
+		public void GetValue_WithFixedValueNull_ReturnsNull()
 		{
 			IValueProvider valueProvider = new FixedValueProvider(null);
 

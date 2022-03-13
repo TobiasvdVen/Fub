@@ -1,6 +1,5 @@
 ﻿using Fub.Prospects;
 using Fub.ValueProvisioning;
-using System.Linq;
 using System.Reflection;
 using Xunit;
 
@@ -19,23 +18,49 @@ namespace Fub.InternalTests.ValueProvidersTests
 		}
 
 		[Fact]
-		public void GivenEmptyProspectValuesWhenCheckedThenReturnEmpty()
+		public void IsEmpty_WhenNothingSet_ReturnsTrue()
 		{
-			ProspectValues memberValues = new ProspectValues();
+			ProspectValues prospectValues = new ProspectValues();
 
-			Assert.True(memberValues.IsEmpty);
+			Assert.True(prospectValues.IsEmpty);
 		}
 
 		[Fact]
-		public void GivenMemberValuesWhenCheckedThenReturnNotEmpty()
+		public void IsEmpty_WhenProviderSet_ReturnsFalse()
 		{
-			ProspectValues memberValues = new ProspectValues();
+			ProspectValues prospectValues = new ProspectValues();
 
-			PropertyInfo propertyInfo = (PropertyInfo)typeof(Goodbye).GetMember(nameof(Goodbye.Property)).First();
+			PropertyInfo propertyInfo = typeof(Goodbye).GetProperty(nameof(Goodbye.Property))!;
 
-			memberValues.SetProvider(new PropertyProspect(propertyInfo), new FixedValueProvider(2));
+			prospectValues.SetProvider(new PropertyProspect(propertyInfo), new FixedValueProvider(2));
 
-			Assert.False(memberValues.IsEmpty);
+			Assert.False(prospectValues.IsEmpty);
+		}
+
+		public interface IBase
+		{
+			public bool SomeBoolean { get; }
+		}
+
+		public class Base : IBase
+		{
+			public bool SomeBoolean { get; }
+		}
+
+		[Fact]
+		public void TryGetProvider_WithConcreteProspect_WhenSetWithInterface_ReturnsTrue()
+		{
+			ProspectValues prospectValues = new ProspectValues();
+
+			PropertyInfo interfaceProperty = typeof(IBase).GetProperty(nameof(IBase.SomeBoolean))!;
+			PropertyInfo classProperty = typeof(Base).GetProperty(nameof(Base.SomeBoolean))!;
+
+			Prospect interfaceProspect = new PropertyProspect(interfaceProperty);
+			Prospect classProspect = new PropertyProspect(classProperty);
+
+			prospectValues.SetProvider(interfaceProspect, new FixedValueProvider(true));
+
+			Assert.True(prospectValues.TryGetProvider(classProspect, out IValueProvider? valueProvider));
 		}
 	}
 }
