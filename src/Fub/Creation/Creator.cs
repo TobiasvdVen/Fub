@@ -41,34 +41,13 @@ namespace Fub.Creation
 
 			object? created;
 
-			IDictionary<Prospect, object?> values = new Dictionary<Prospect, object?>();
+			IDictionary<Prospect, object?> values;
 
 			if (constructor != null)
 			{
 				IEnumerable<Prospect> prospects = prospector.GetProspects(type, constructor);
 
-				foreach (Prospect prospect in prospects)
-				{
-					if (prospectValues.TryGetProvider(prospect, out IValueProvider? valueProvider))
-					{
-#if NET5_0_OR_GREATER
-						values[prospect] = valueProvider.GetValue();
-#else
-						values[prospect] = valueProvider!.GetValue();
-#endif
-					}
-					else
-					{
-						if (prospect.Nullable)
-						{
-							values[prospect] = null;
-						}
-						else
-						{
-							values[prospect] = Create(prospect.Type);
-						}
-					}
-				}
+				values = GetValues(prospectValues, prospects);
 
 				List<object?> arguments = new();
 
@@ -92,28 +71,7 @@ namespace Fub.Creation
 			{
 				IEnumerable<Prospect> prospects = prospector.GetProspects(type);
 
-				foreach (Prospect prospect in prospects)
-				{
-					if (prospectValues.TryGetProvider(prospect, out IValueProvider? valueProvider))
-					{
-#if NET5_0_OR_GREATER
-						values[prospect] = valueProvider.GetValue();
-#else
-						values[prospect] = valueProvider!.GetValue();
-#endif
-					}
-					else
-					{
-						if (prospect.Nullable)
-						{
-							values[prospect] = null;
-						}
-						else
-						{
-							values[prospect] = Create(prospect.Type);
-						}
-					}
-				}
+				values = GetValues(prospectValues, prospects);
 
 				created = Activator.CreateInstance(type);
 			}
@@ -147,6 +105,36 @@ namespace Fub.Creation
 			}
 
 			return created;
+		}
+
+		private IDictionary<Prospect, object?> GetValues(IProspectValues prospectValues, IEnumerable<Prospect> prospects)
+		{
+			Dictionary<Prospect, object?> values = new();
+
+			foreach (Prospect prospect in prospects)
+			{
+				if (prospectValues.TryGetProvider(prospect, out IValueProvider? valueProvider))
+				{
+#if NET5_0_OR_GREATER
+					values[prospect] = valueProvider.GetValue();
+#else
+					values[prospect] = valueProvider!.GetValue();
+#endif
+				}
+				else
+				{
+					if (prospect.Nullable)
+					{
+						values[prospect] = null;
+					}
+					else
+					{
+						values[prospect] = Create(prospect.Type);
+					}
+				}
+			}
+
+			return values;
 		}
 	}
 }
