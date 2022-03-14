@@ -13,8 +13,6 @@ namespace Fub.Creation.ConstructorResolvers
 			this.type = type;
 		}
 
-		protected Type Type => type;
-
 		public virtual ConstructorInfo? Resolve()
 		{
 			ConstructorInfo[] constructors = type.GetConstructors();

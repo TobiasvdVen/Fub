@@ -34,6 +34,12 @@ namespace Fub.Tests
 			}
 		}
 
+		public class ClassWithoutConstructor
+		{
+			public string? @string;
+			public int integer;
+		}
+
 		[Fact]
 		public void Create_ClassWithNoOverrides_ReturnsDefault()
 		{
@@ -69,6 +75,18 @@ namespace Fub.Tests
 
 			Assert.NotNull(created.@string);
 			Assert.Equal(string.Empty, created.@string);
+			Assert.Equal(default, created.integer);
+		}
+
+		[Fact]
+		public void Create_ClassWithoutConstructorWithNoOverrides_ReturnsDefault()
+		{
+			FubBuilder<ClassWithoutConstructor> builder = new();
+			Fub<ClassWithoutConstructor> fub = builder.Build();
+
+			ClassWithoutConstructor created = fub.Create();
+
+			Assert.Null(created.@string);
 			Assert.Equal(default, created.integer);
 		}
 	}

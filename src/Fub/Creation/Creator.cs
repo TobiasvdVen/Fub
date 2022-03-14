@@ -13,10 +13,14 @@ namespace Fub.Creation
 		private readonly IConstructorResolverFactory constructorResolverFactory;
 		private readonly IProspector prospector;
 
+		private readonly MembersInitializer membersInitializer;
+
 		public Creator(IConstructorResolverFactory constructorResolverFactory, IProspector prospector)
 		{
 			this.constructorResolverFactory = constructorResolverFactory;
 			this.prospector = prospector;
+
+			membersInitializer = new();
 		}
 
 		public T Create<T>() where T : notnull
@@ -39,70 +43,52 @@ namespace Fub.Creation
 			IConstructorResolver constructorResolver = constructorResolverFactory.CreateConstructorResolver(type);
 			ConstructorInfo? constructor = constructorResolver.Resolve();
 
-			object? created;
-
-			IDictionary<Prospect, object?> values;
-
 			if (constructor != null)
 			{
-				IEnumerable<Prospect> prospects = prospector.GetProspects(type, constructor);
+				return CreateWithConstructor(type, prospectValues, constructor);
+			}
 
-				values = GetValues(prospectValues, prospects);
+			IEnumerable<Prospect> prospects = prospector.GetProspects(type);
 
-				List<object?> arguments = new();
+			IDictionary<Prospect, object?> values = GetValues(prospectValues, prospects);
 
-				foreach (ParameterInfo parameter in constructor.GetParameters())
+			object? created = Activator.CreateInstance(type);
+
+			if (created == null)
+			{
+				throw new FubException($"Failed to construct object of type {type}, {nameof(Activator.CreateInstance)} returned null.");
+			}
+
+			membersInitializer.Initialize(type, created, values);
+
+			return created;
+		}
+
+		private object CreateWithConstructor(Type type, IProspectValues prospectValues, ConstructorInfo constructor)
+		{
+			IEnumerable<Prospect> prospects = prospector.GetProspects(type, constructor);
+
+			IDictionary<Prospect, object?> values = GetValues(prospectValues, prospects);
+
+			List<object?> arguments = new();
+
+			foreach (ParameterInfo parameter in constructor.GetParameters())
+			{
+				Prospect? prospect = values.Keys.FirstOrDefault(v => v is ParameterProspect prospect && prospect.ParameterInfo == parameter);
+
+				if (prospect != null)
 				{
-					Prospect? prospect = values.Keys.FirstOrDefault(v => v is ParameterProspect prospect && prospect.ParameterInfo == parameter);
-
-					if (prospect != null)
-					{
-						arguments.Add(values[prospect]);
-					}
-					else
-					{
-						arguments.Add(Create(parameter.ParameterType));
-					}
+					arguments.Add(values[prospect]);
 				}
-
-				created = constructor.Invoke(arguments.ToArray());
-			}
-			else
-			{
-				IEnumerable<Prospect> prospects = prospector.GetProspects(type);
-
-				values = GetValues(prospectValues, prospects);
-
-				created = Activator.CreateInstance(type);
-			}
-
-			if (created != null)
-			{
-				foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+				else
 				{
-					// If the property has no getter, or the getter requires any parameters, skip the property
-					if (property.GetGetMethod()?.GetParameters().Any() ?? true)
-					{
-						continue;
-					}
-
-					if (property.GetSetMethod() == null)
-					{
-						continue;
-					}
-
-					Prospect? prospect = values.Keys.FirstOrDefault(v => v is PropertyProspect prospect && prospect.MemberInfo == property);
-
-					if (prospect != null)
-					{
-						property.SetValue(created, values[prospect]);
-					}
-					else
-					{
-						property.SetValue(created, Create(property.PropertyType));
-					}
+					arguments.Add(Create(parameter.ParameterType));
 				}
 			}
+
+			object created = constructor.Invoke(arguments.ToArray());
+
+			membersInitializer.Initialize(type, created, values);
 
 			return created;
 		}
