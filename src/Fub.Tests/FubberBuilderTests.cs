@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Fub.Tests
 {
-	public class FubBuilderTests
+	public class FubberBuilderTests
 	{
 		private class SimpleCreateable
 		{
