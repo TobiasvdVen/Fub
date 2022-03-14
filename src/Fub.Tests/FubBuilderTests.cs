@@ -16,24 +16,24 @@ namespace Fub.Tests
 		[Fact]
 		public void Build_Default_ReturnsFub()
 		{
-			FubBuilder<SimpleCreateable> builder = new();
+			FubberBuilder<SimpleCreateable> builder = new();
 
-			Fub<SimpleCreateable> fub = builder.Build();
+			Fubber<SimpleCreateable> fubber = builder.Build();
 
-			SimpleCreateable created = fub.Create();
+			SimpleCreateable fub = fubber.Fub();
 
-			Assert.NotNull(created);
+			Assert.NotNull(fub);
 		}
 
 		[Fact]
 		public void Build_WithCustomCreator_InjectsCreator()
 		{
-			FubBuilder<SimpleCreateable> builder = new();
+			FubberBuilder<SimpleCreateable> builder = new();
 			Mock<ICreator> creator = new();
 
-			Fub<SimpleCreateable> fub = builder.UseCreator(creator.Object).Build();
+			Fubber<SimpleCreateable> fubber = builder.UseCreator(creator.Object).Build();
 
-			fub.Create();
+			fubber.Fub();
 
 			creator.Verify(c => c.Create<SimpleCreateable>(It.IsAny<IProspectValues>()));
 		}
@@ -47,20 +47,20 @@ namespace Fub.Tests
 		[Fact]
 		public void Build_WithTwoDefaults_ReturnsFub()
 		{
-			FubBuilder<SomeClass> builder = new();
+			FubberBuilder<SomeClass> builder = new();
 
 			string expectedName = "Sarah";
 			int expectedAge = 256;
 
-			Fub<SomeClass> fub = builder
+			Fubber<SomeClass> fubber = builder
 				.WithDefault(s => s.Name, expectedName)
 				.WithDefault(s => s.Age, expectedAge)
 				.Build();
 
-			SomeClass created = fub.Create();
+			SomeClass fub = fubber.Fub();
 
-			Assert.Equal(expectedName, created.Name);
-			Assert.Equal(expectedAge, created.Age);
+			Assert.Equal(expectedName, fub.Name);
+			Assert.Equal(expectedAge, fub.Age);
 		}
 
 		public class Goodbye
@@ -76,7 +76,7 @@ namespace Fub.Tests
 		[Fact]
 		public void WithDefault_InvalidExpression_Throws()
 		{
-			FubBuilder<Goodbye> builder = new();
+			FubberBuilder<Goodbye> builder = new();
 
 			Assert.Throws<ArgumentException>(() => builder.WithDefault(g => "", ""));
 		}

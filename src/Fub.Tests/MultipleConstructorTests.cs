@@ -24,23 +24,23 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_WithConstructor_UsesSpecifiedConstructor()
 		{
-			FubBuilder<TwoConstructors> builder = new();
+			FubberBuilder<TwoConstructors> builder = new();
 
 			ConstructorInfo intConstructor = typeof(TwoConstructors).GetConstructor(new Type[] { typeof(int) })!;
-			Fub<TwoConstructors> fub = builder.UseConstructor(intConstructor).Build();
+			Fubber<TwoConstructors> fubber = builder.UseConstructor(intConstructor).Build();
 
-			TwoConstructors created = fub.Create();
+			TwoConstructors fub = fubber.Fub();
 
-			Assert.Equal(0, created.Value);
+			Assert.Equal(0, fub.Value);
 		}
 
 		[Fact]
 		public void Create_WithNoConstructorOverride_Throws()
 		{
-			FubBuilder<TwoConstructors> builder = new();
-			Fub<TwoConstructors> fub = builder.Build();
+			FubberBuilder<TwoConstructors> builder = new();
+			Fubber<TwoConstructors> fubber = builder.Build();
 
-			Assert.Throws<InvalidOperationException>(() => fub.Create());
+			Assert.Throws<InvalidOperationException>(() => fubber.Fub());
 		}
 	}
 }

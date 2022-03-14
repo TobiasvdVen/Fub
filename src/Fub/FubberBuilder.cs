@@ -8,11 +8,11 @@ using System.Reflection;
 
 namespace Fub
 {
-	public class FubBuilder<T> : IFubBuilder<T> where T : notnull
+	public class FubberBuilder<T> where T : notnull
 	{
 		private readonly IConstructorResolverFactory constructorResolverFactory;
 
-		public FubBuilder()
+		public FubberBuilder()
 		{
 			Type type = typeof(T);
 
@@ -30,14 +30,14 @@ namespace Fub
 
 		public IProspectValues DefaultValues { get; }
 
-		public Fub<T> Build()
+		public Fubber<T> Build()
 		{
 			ICreator creator = Creator ?? new Creator(constructorResolverFactory, new Prospector());
 
-			return new Fub<T>(creator, DefaultValues);
+			return new Fubber<T>(creator, DefaultValues);
 		}
 
-		public IFubBuilder<T> WithDefault<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
+		public FubberBuilder<T> WithDefault<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
 		{
 			if (expression.Body is MemberExpression memberExpression)
 			{
@@ -51,14 +51,14 @@ namespace Fub
 			return this;
 		}
 
-		public IFubBuilder<T> UseCreator(ICreator creator)
+		public FubberBuilder<T> UseCreator(ICreator creator)
 		{
 			Creator = creator;
 
 			return this;
 		}
 
-		public IFubBuilder<T> UseConstructor(ConstructorInfo constructor)
+		public FubberBuilder<T> UseConstructor(ConstructorInfo constructor)
 		{
 			FixedConstructorResolver resolver = new(constructor);
 
@@ -67,7 +67,7 @@ namespace Fub
 			return this;
 		}
 
-		public IFubBuilder<T> UseConstructor<TOtherType>(ConstructorInfo constructor)
+		public FubberBuilder<T> UseConstructor<TOtherType>(ConstructorInfo constructor)
 		{
 			throw new NotImplementedException();
 		}

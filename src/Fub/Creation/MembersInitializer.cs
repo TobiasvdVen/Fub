@@ -8,7 +8,7 @@ namespace Fub.Creation
 {
 	internal class MembersInitializer
 	{
-		public void Initialize(Type type, object created, IDictionary<Prospect, object?> values)
+		public void Initialize(Type type, object fub, IDictionary<Prospect, object?> values)
 		{
 			foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
 			{
@@ -27,12 +27,12 @@ namespace Fub.Creation
 
 				if (prospect != null)
 				{
-					property.SetValue(created, values[prospect]);
+					property.SetValue(fub, values[prospect]);
 				}
 				else
 				{
 					throw new NotImplementedException();
-					//property.SetValue(created, Create(property.PropertyType));
+					//property.SetValue(fub, Create(property.PropertyType));
 				}
 			}
 		}

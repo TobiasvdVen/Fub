@@ -43,51 +43,51 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_ClassWithNoOverrides_ReturnsDefault()
 		{
-			FubBuilder<Class> builder = new();
-			Fub<Class> fub = builder.Build();
+			FubberBuilder<Class> builder = new();
+			Fubber<Class> fubber = builder.Build();
 
-			Class created = fub.Create();
+			Class fub = fubber.Fub();
 
-			Assert.NotNull(created.@string);
-			Assert.Equal(string.Empty, created.@string);
-			Assert.Equal(default, created.integer);
+			Assert.NotNull(fub.@string);
+			Assert.Equal(string.Empty, fub.@string);
+			Assert.Equal(default, fub.integer);
 		}
 
 		[Fact]
 		public void Create_StructWithNoOverrides_ReturnsDefault()
 		{
-			FubBuilder<Struct> builder = new();
-			Fub<Struct> fub = builder.Build();
+			FubberBuilder<Struct> builder = new();
+			Fubber<Struct> fubber = builder.Build();
 
-			Struct created = fub.Create();
+			Struct fub = fubber.Fub();
 
-			Assert.Null(created.@string);
-			Assert.Equal(default, created.integer);
+			Assert.Null(fub.@string);
+			Assert.Equal(default, fub.integer);
 		}
 
 		[Fact]
 		public void Create_StructWithConstructorWithNoOverrides_ReturnsDefault()
 		{
-			FubBuilder<StructWithConstructor> builder = new();
-			Fub<StructWithConstructor> fub = builder.Build();
+			FubberBuilder<StructWithConstructor> builder = new();
+			Fubber<StructWithConstructor> fubber = builder.Build();
 
-			StructWithConstructor created = fub.Create();
+			StructWithConstructor fub = fubber.Fub();
 
-			Assert.NotNull(created.@string);
-			Assert.Equal(string.Empty, created.@string);
-			Assert.Equal(default, created.integer);
+			Assert.NotNull(fub.@string);
+			Assert.Equal(string.Empty, fub.@string);
+			Assert.Equal(default, fub.integer);
 		}
 
 		[Fact]
 		public void Create_ClassWithoutConstructorWithNoOverrides_ReturnsDefault()
 		{
-			FubBuilder<ClassWithoutConstructor> builder = new();
-			Fub<ClassWithoutConstructor> fub = builder.Build();
+			FubberBuilder<ClassWithoutConstructor> builder = new();
+			Fubber<ClassWithoutConstructor> fubber = builder.Build();
 
-			ClassWithoutConstructor created = fub.Create();
+			ClassWithoutConstructor fub = fubber.Fub();
 
-			Assert.Null(created.@string);
-			Assert.Equal(default, created.integer);
+			Assert.Null(fub.@string);
+			Assert.Equal(default, fub.integer);
 		}
 	}
 }

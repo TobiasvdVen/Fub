@@ -57,12 +57,12 @@ namespace Fub.Tests
 
 		private void CreateAndAssert<T>() where T : IEmpty
 		{
-			FubBuilder<T> builder = new FubBuilder<T>();
-			Fub<T> fub = builder.Build();
+			FubberBuilder<T> builder = new FubberBuilder<T>();
+			Fubber<T> fubber = builder.Build();
 
-			IEmpty created = fub.Create();
+			IEmpty fub = fubber.Fub();
 
-			Assert.IsType<T>(created);
+			Assert.IsType<T>(fub);
 		}
 	}
 }

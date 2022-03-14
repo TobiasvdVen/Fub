@@ -6,12 +6,12 @@ using System.Linq.Expressions;
 
 namespace Fub
 {
-	public class Fub<T> : IFub<T> where T : notnull
+	public class Fubber<T> where T : notnull
 	{
 		private readonly ICreator creator;
 		private readonly IProspectValues defaultValues;
 
-		public Fub(ICreator creator, IProspectValues defaultValues)
+		public Fubber(ICreator creator, IProspectValues defaultValues)
 		{
 			Type type = typeof(T);
 
@@ -24,12 +24,12 @@ namespace Fub
 			this.defaultValues = defaultValues;
 		}
 
-		public T Create()
+		public T Fub()
 		{
 			return creator.Create<T>(defaultValues);
 		}
 
-		public T Create<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
+		public T Fub<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
 		{
 			IProspectValues prospectValues = defaultValues.Clone();
 
@@ -38,7 +38,7 @@ namespace Fub
 			return creator.Create<T>(prospectValues);
 		}
 
-		public T Create<TProperty1, TProperty2>(
+		public T Fub<TProperty1, TProperty2>(
 			Expression<Func<T, TProperty1>> expression1, TProperty1 value1,
 			Expression<Func<T, TProperty2>> expression2, TProperty2 value2)
 		{

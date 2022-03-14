@@ -153,29 +153,29 @@ namespace Fub.Tests
 
 		private void CreateAndAssertDefault<T>() where T : INullableBuiltInTypes
 		{
-			FubBuilder<T> builder = new();
-			Fub<T> fub = builder.Build();
+			FubberBuilder<T> builder = new();
+			Fubber<T> fubber = builder.Build();
 
-			INullableBuiltInTypes created = fub.Create();
+			INullableBuiltInTypes fub = fubber.Fub();
 
-			Assert.Equal(default, created.Bool);
-			Assert.Equal(default, created.Byte);
-			Assert.Equal(default, created.SByte);
-			Assert.Equal(default, created.Char);
-			Assert.Equal(default, created.Decimal);
-			Assert.Equal(default, created.Double);
-			Assert.Equal(default, created.Float);
-			Assert.Equal(default, created.Int);
-			Assert.Equal(default, created.UInt);
-			Assert.Equal(default, created.NInt);
-			Assert.Equal(default, created.NUInt);
-			Assert.Equal(default, created.Long);
-			Assert.Equal(default, created.ULong);
-			Assert.Equal(default, created.Short);
-			Assert.Equal(default, created.UShort);
+			Assert.Equal(default, fub.Bool);
+			Assert.Equal(default, fub.Byte);
+			Assert.Equal(default, fub.SByte);
+			Assert.Equal(default, fub.Char);
+			Assert.Equal(default, fub.Decimal);
+			Assert.Equal(default, fub.Double);
+			Assert.Equal(default, fub.Float);
+			Assert.Equal(default, fub.Int);
+			Assert.Equal(default, fub.UInt);
+			Assert.Equal(default, fub.NInt);
+			Assert.Equal(default, fub.NUInt);
+			Assert.Equal(default, fub.Long);
+			Assert.Equal(default, fub.ULong);
+			Assert.Equal(default, fub.Short);
+			Assert.Equal(default, fub.UShort);
 
-			Assert.Null(created.Object);
-			Assert.Null(created.String);
+			Assert.Null(fub.Object);
+			Assert.Null(fub.String);
 		}
 	}
 }

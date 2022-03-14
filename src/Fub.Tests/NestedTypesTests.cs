@@ -22,12 +22,12 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_HasEmptyNestedType_ReturnsDefault()
 		{
-			FubBuilder<HasEmptyNestedType> builder = new();
-			Fub<HasEmptyNestedType> fub = builder.Build();
+			FubberBuilder<HasEmptyNestedType> builder = new();
+			Fubber<HasEmptyNestedType> fubber = builder.Build();
 
-			HasEmptyNestedType created = fub.Create();
+			HasEmptyNestedType fub = fubber.Fub();
 
-			Assert.NotNull(created.Empty);
+			Assert.NotNull(fub.Empty);
 		}
 
 		public class Simple
@@ -57,26 +57,26 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_HasSimpleNestedType_WithNoOverrides_ReturnsDefault()
 		{
-			FubBuilder<HasSimpleNestedType> builder = new();
-			Fub<HasSimpleNestedType> fub = builder.Build();
+			FubberBuilder<HasSimpleNestedType> builder = new();
+			Fubber<HasSimpleNestedType> fubber = builder.Build();
 
-			HasSimpleNestedType created = fub.Create();
+			HasSimpleNestedType fub = fubber.Fub();
 
-			Assert.Equal(string.Empty, created.Simple.Name);
-			Assert.Equal(default, created.Simple.Boolean);
-			Assert.NotNull(created.Simple.Empty);
+			Assert.Equal(string.Empty, fub.Simple.Name);
+			Assert.Equal(default, fub.Simple.Boolean);
+			Assert.NotNull(fub.Simple.Empty);
 		}
 
 		[Fact]
 		public void Create_HasSimpleNestedType_WithSimpleOverride_ReturnsFub()
 		{
-			FubBuilder<HasSimpleNestedType> builder = new();
-			Fub<HasSimpleNestedType> fub = builder.Build();
+			FubberBuilder<HasSimpleNestedType> builder = new();
+			Fubber<HasSimpleNestedType> fubber = builder.Build();
 
-			HasSimpleNestedType created = fub.Create(h => h.Simple, new Simple("Barney", true, new Empty()));
+			HasSimpleNestedType fub = fubber.Fub(h => h.Simple, new Simple("Barney", true, new Empty()));
 
-			Assert.Equal("Barney", created.Simple.Name);
-			Assert.Equal(true, created.Simple.Boolean);
+			Assert.Equal("Barney", fub.Simple.Name);
+			Assert.Equal(true, fub.Simple.Boolean);
 		}
 	}
 }

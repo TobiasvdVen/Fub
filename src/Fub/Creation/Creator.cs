@@ -52,16 +52,16 @@ namespace Fub.Creation
 
 			IDictionary<Prospect, object?> values = GetValues(prospectValues, prospects);
 
-			object? created = Activator.CreateInstance(type);
+			object? fub = Activator.CreateInstance(type);
 
-			if (created == null)
+			if (fub == null)
 			{
 				throw new FubException($"Failed to construct object of type {type}, {nameof(Activator.CreateInstance)} returned null.");
 			}
 
-			membersInitializer.Initialize(type, created, values);
+			membersInitializer.Initialize(type, fub, values);
 
-			return created;
+			return fub;
 		}
 
 		private object CreateWithConstructor(Type type, IProspectValues prospectValues, ConstructorInfo constructor)
@@ -86,11 +86,11 @@ namespace Fub.Creation
 				}
 			}
 
-			object created = constructor.Invoke(arguments.ToArray());
+			object fub = constructor.Invoke(arguments.ToArray());
 
-			membersInitializer.Initialize(type, created, values);
+			membersInitializer.Initialize(type, fub, values);
 
-			return created;
+			return fub;
 		}
 
 		private IDictionary<Prospect, object?> GetValues(IProspectValues prospectValues, IEnumerable<Prospect> prospects)

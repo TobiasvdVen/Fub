@@ -20,9 +20,9 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_WithNonPropertyOrFieldExpression_Throws()
 		{
-			Fub<HiThere> fub = new FubBuilder<HiThere>().Build();
+			Fubber<HiThere> fubber = new FubberBuilder<HiThere>().Build();
 
-			InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => fub.Create(f => "", ""));
+			InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => fubber.Fub(f => "", ""));
 
 			Assert.Equal($"Expression must be a {nameof(MemberExpression)}.", ex.Message);
 		}
@@ -35,7 +35,7 @@ namespace Fub.Tests
 		[Fact]
 		public void FubBuilder_ForInterface_Throws()
 		{
-			Assert.Throws<InvalidOperationException>(() => new FubBuilder<IMyInterface>());
+			Assert.Throws<InvalidOperationException>(() => new FubberBuilder<IMyInterface>());
 		}
 
 		[Fact]
@@ -44,7 +44,7 @@ namespace Fub.Tests
 			Mock<ICreator> creator = new();
 			Mock<IProspectValues> prospectValues = new();
 
-			Assert.Throws<InvalidOperationException>(() => new Fub<IMyInterface>(creator.Object, prospectValues.Object));
+			Assert.Throws<InvalidOperationException>(() => new Fubber<IMyInterface>(creator.Object, prospectValues.Object));
 		}
 	}
 }

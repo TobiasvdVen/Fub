@@ -6,7 +6,7 @@ namespace Fub.InternalTests.Creation
 	public class CreatorTests
 	{
 		[Fact]
-		public void ShouldCreateObjectDefaultNotNull()
+		public void Create_Object_ReturnsNotNull()
 		{
 			ICreator creator = new Creator(new ConstructorResolverFactory(), new Prospector());
 
@@ -18,7 +18,7 @@ namespace Fub.InternalTests.Creation
 		}
 
 		[Fact]
-		public void ShouldCreateStringDefaultEmpty()
+		public void Create_String_ReturnsEmptyString()
 		{
 			ICreator creator = new Creator(new ConstructorResolverFactory(), new Prospector());
 

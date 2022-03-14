@@ -36,13 +36,13 @@ namespace Fub.Tests
 
 		private void Create_WithNoOverrides_ReturnsDefault<T>() where T : IStringIntMutable
 		{
-			FubBuilder<T> builder = new();
-			Fub<T> fub = builder.Build();
+			FubberBuilder<T> builder = new();
+			Fubber<T> fubber = builder.Build();
 
-			IStringIntMutable created = fub.Create();
+			IStringIntMutable fub = fubber.Fub();
 
-			Assert.Null(created.String);
-			Assert.Equal(default, created.Integer);
+			Assert.Null(fub.String);
+			Assert.Equal(default, fub.Integer);
 		}
 
 		[Fact]
@@ -59,12 +59,12 @@ namespace Fub.Tests
 
 		private void Create_WithNullableStringOverride_ReturnsFub<T>() where T : IStringIntMutable
 		{
-			FubBuilder<T> builder = new();
-			Fub<T> fub = builder.Build();
+			FubberBuilder<T> builder = new();
+			Fubber<T> fubber = builder.Build();
 
-			IStringIntMutable created = fub.Create(f => f.String, "Henry");
+			IStringIntMutable fub = fubber.Fub(f => f.String, "Henry");
 
-			Assert.Equal("Henry", created.String);
+			Assert.Equal("Henry", fub.String);
 		}
 
 		[Fact]
@@ -81,12 +81,12 @@ namespace Fub.Tests
 
 		public void Create_WithIntOverride_ReturnsFub<T>() where T : IStringIntMutable
 		{
-			FubBuilder<T> builder = new();
-			Fub<T> fub = builder.Build();
+			FubberBuilder<T> builder = new();
+			Fubber<T> fubber = builder.Build();
 
-			IStringIntMutable created = fub.Create(m => m.Integer, 32);
+			IStringIntMutable fub = fubber.Fub(m => m.Integer, 32);
 
-			Assert.Equal(32, created.Integer);
+			Assert.Equal(32, fub.Integer);
 		}
 
 		[Fact]
@@ -103,12 +103,12 @@ namespace Fub.Tests
 
 		private void Create_WithNullableStringOverrideToNull_ReturnsFub<T>() where T : IStringIntMutable
 		{
-			FubBuilder<T> builder = new();
-			Fub<T> fub = builder.Build();
+			FubberBuilder<T> builder = new();
+			Fubber<T> fubber = builder.Build();
 
-			IStringIntMutable created = fub.Create(m => m.String, null);
+			IStringIntMutable fub = fubber.Fub(m => m.String, null);
 
-			Assert.Null(created.String);
+			Assert.Null(fub.String);
 		}
 
 		[Fact]
@@ -125,15 +125,15 @@ namespace Fub.Tests
 
 		private void Create_WithIntAndNullableStringOverrides_ReturnsFub<T>() where T : IStringIntMutable
 		{
-			FubBuilder<T> builder = new();
-			Fub<T> fub = builder.Build();
+			FubberBuilder<T> builder = new();
+			Fubber<T> fubber = builder.Build();
 
-			IStringIntMutable created = fub.Create(
+			IStringIntMutable fub = fubber.Fub(
 				m => m.String, "Thomas",
 				m => m.Integer, 42);
 
-			Assert.Equal("Thomas", created.String);
-			Assert.Equal(42, created.Integer);
+			Assert.Equal("Thomas", fub.String);
+			Assert.Equal(42, fub.Integer);
 		}
 
 		[Fact]
@@ -150,17 +150,17 @@ namespace Fub.Tests
 
 		private void Create_WithIntAndNullableStringDefaults_ReturnsFub<T>() where T : IStringIntMutable
 		{
-			FubBuilder<T> builder = new();
+			FubberBuilder<T> builder = new();
 
-			Fub<T> noCtorMutable = builder
+			Fubber<T> noCtorMutable = builder
 				.WithDefault(m => m.String, "Katie")
 				.WithDefault(m => m.Integer, 22)
 				.Build();
 
-			IStringIntMutable created = noCtorMutable.Create();
+			IStringIntMutable fub = noCtorMutable.Fub();
 
-			Assert.Equal("Katie", created.String);
-			Assert.Equal(22, created.Integer);
+			Assert.Equal("Katie", fub.String);
+			Assert.Equal(22, fub.Integer);
 		}
 	}
 }

@@ -72,14 +72,14 @@ namespace Fub.Tests
 
 		private void Create_WithNoOverrides_ReturnsDefault<T>() where T : IStringInt
 		{
-			FubBuilder<T> builder = new();
-			Fub<T> fub = builder.Build();
+			FubberBuilder<T> builder = new();
+			Fubber<T> fubber = builder.Build();
 
-			IStringInt created = fub.Create();
+			IStringInt fub = fubber.Fub();
 
-			Assert.NotNull(created.String);
-			Assert.Equal(string.Empty, created.String);
-			Assert.Equal(default, created.Integer);
+			Assert.NotNull(fub.String);
+			Assert.Equal(string.Empty, fub.String);
+			Assert.Equal(default, fub.Integer);
 		}
 
 		public struct StructWithNoConstructor : IStringInt
@@ -91,15 +91,15 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_StructWithNoConstructorWithNoOverrides_ReturnsDefault()
 		{
-			FubBuilder<StructWithNoConstructor> builder = new();
-			Fub<StructWithNoConstructor> fub = builder.Build();
+			FubberBuilder<StructWithNoConstructor> builder = new();
+			Fubber<StructWithNoConstructor> fubber = builder.Build();
 
-			StructWithNoConstructor created = fub.Create();
+			StructWithNoConstructor fub = fubber.Fub();
 
 			// Non-nullable reference types in structs are still initialized to null when not explicitly initialized, and this is not prevented by the nullability analyzer
 			// See: https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references#structs
-			Assert.Null(created.String);
-			Assert.Equal(default, created.Integer);
+			Assert.Null(fub.String);
+			Assert.Equal(default, fub.Integer);
 		}
 	}
 }

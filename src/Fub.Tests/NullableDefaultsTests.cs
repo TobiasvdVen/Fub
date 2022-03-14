@@ -29,12 +29,12 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_ClassWithConstructor_ReturnsFubWithMembersAccordingToNullability()
 		{
-			Fub<Constructor> fub = new FubBuilder<Constructor>().Build();
+			Fubber<Constructor> fubber = new FubberBuilder<Constructor>().Build();
 
-			Constructor created = fub.Create();
+			Constructor fub = fubber.Fub();
 
-			Assert.NotNull(created.Thing);
-			Assert.Null(created.NullableThing);
+			Assert.NotNull(fub.Thing);
+			Assert.Null(fub.NullableThing);
 		}
 
 		public class Mutable
@@ -51,12 +51,12 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_ClassWithNoConstructor_ReturnsFubWithMembersAccordingToNullability()
 		{
-			Fub<Mutable> fub = new FubBuilder<Mutable>().Build();
+			Fubber<Mutable> fubber = new FubberBuilder<Mutable>().Build();
 
-			Mutable created = fub.Create();
+			Mutable fub = fubber.Fub();
 
-			Assert.NotNull(created.Thing);
-			Assert.Null(created.NullableThing);
+			Assert.NotNull(fub.Thing);
+			Assert.Null(fub.NullableThing);
 		}
 	}
 }
