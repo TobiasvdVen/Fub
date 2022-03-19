@@ -8,11 +8,44 @@ namespace Fub.Creation
 {
 	internal class Prospector : IProspector
 	{
+		public IEnumerable<MemberProspect> GetMemberProspects(Type type)
+		{
+			return GetMemberProspects(type, skipImmutable: false);
+		}
+
+		public IEnumerable<MemberProspect> GetMutableMemberProspects(Type type)
+		{
+			return GetMemberProspects(type, skipImmutable: true);
+		}
+
+		public IEnumerable<ParameterProspect> GetParameterProspects(Type type, ConstructorInfo constructor)
+		{
+			IEnumerable<ParameterInfo> parameters = constructor.GetParameters();
+
+			IEnumerable<MemberProspect> memberProspects = GetMemberProspects(type);
+
+			IEnumerable<ParameterProspect> parameterProspects = parameters.Select(p =>
+			{
+				MemberProspect? associatedMember = memberProspects.FirstOrDefault(m => m.MemberInfo.Name.Equals(p.Name, StringComparison.OrdinalIgnoreCase));
+
+				if (associatedMember != null)
+				{
+					return new ParameterProspect(p, associatedMember.MemberInfo);
+				}
+				else
+				{
+					return new ParameterProspect(p);
+				}
+			});
+
+			return parameterProspects;
+		}
+
 		public IEnumerable<Prospect> GetProspects(Type type, ConstructorInfo constructor)
 		{
 			IEnumerable<ParameterInfo> parameters = constructor.GetParameters();
 
-			IEnumerable<MemberProspect> memberProspects = GetProspects(type);
+			IEnumerable<MemberProspect> memberProspects = GetMemberProspects(type);
 
 			IEnumerable<Prospect> parameterProspects = parameters.Select(p =>
 			{
@@ -31,26 +64,31 @@ namespace Fub.Creation
 			return parameterProspects.Concat(memberProspects);
 		}
 
-		public IEnumerable<MemberProspect> GetProspects(Type type)
+		private IEnumerable<MemberProspect> GetMemberProspects(Type type, bool skipImmutable)
 		{
 			IEnumerable<MemberInfo> members = type
 				.GetMembers(BindingFlags.Public | BindingFlags.Instance)
 				.Where(m => m.IsPropertyOrField());
 
-			IEnumerable<MemberProspect> memberProspects = members.Select<MemberInfo, MemberProspect>(m =>
+			List<MemberProspect> memberProspects = new();
+
+			foreach (MemberInfo memberInfo in members)
 			{
-				if (m is FieldInfo field)
+				if (memberInfo is FieldInfo field)
 				{
-					return new FieldProspect(field);
+					memberProspects.Add(new FieldProspect(field));
 				}
 
-				if (m is PropertyInfo property)
+				if (memberInfo is PropertyInfo property)
 				{
-					return new PropertyProspect(property);
-				}
+					if (property.SetMethod == null && skipImmutable)
+					{
+						continue;
+					}
 
-				throw new Exception($"This should be guaranteed to be impossible.");
-			});
+					memberProspects.Add(new PropertyProspect(property));
+				}
+			}
 
 			return memberProspects;
 		}

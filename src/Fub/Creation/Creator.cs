@@ -48,16 +48,16 @@ namespace Fub.Creation
 				return CreateWithConstructor(type, prospectValues, constructor);
 			}
 
-			IEnumerable<Prospect> prospects = prospector.GetProspects(type);
-
-			IDictionary<Prospect, object?> values = GetValues(prospectValues, prospects);
-
 			object? fub = Activator.CreateInstance(type);
 
 			if (fub == null)
 			{
 				throw new FubException($"Failed to construct object of type {type}, {nameof(Activator.CreateInstance)} returned null.");
 			}
+
+			IEnumerable<Prospect> prospects = prospector.GetMutableMemberProspects(type);
+
+			IDictionary<Prospect, object?> values = GetValues(prospectValues, prospects);
 
 			membersInitializer.Initialize(type, fub, values);
 
@@ -66,19 +66,19 @@ namespace Fub.Creation
 
 		private object CreateWithConstructor(Type type, IProspectValues prospectValues, ConstructorInfo constructor)
 		{
-			IEnumerable<Prospect> prospects = prospector.GetProspects(type, constructor);
+			IEnumerable<ParameterProspect> parameterProspects = prospector.GetParameterProspects(type, constructor);
 
-			IDictionary<Prospect, object?> values = GetValues(prospectValues, prospects);
+			IDictionary<Prospect, object?> parameterValues = GetValues(prospectValues, parameterProspects);
 
 			List<object?> arguments = new();
 
 			foreach (ParameterInfo parameter in constructor.GetParameters())
 			{
-				Prospect? prospect = values.Keys.FirstOrDefault(v => v is ParameterProspect prospect && prospect.ParameterInfo == parameter);
+				Prospect? prospect = parameterValues.Keys.FirstOrDefault(v => v is ParameterProspect prospect && prospect.ParameterInfo == parameter);
 
 				if (prospect != null)
 				{
-					arguments.Add(values[prospect]);
+					arguments.Add(parameterValues[prospect]);
 				}
 				else
 				{
@@ -88,7 +88,10 @@ namespace Fub.Creation
 
 			object fub = constructor.Invoke(arguments.ToArray());
 
-			membersInitializer.Initialize(type, fub, values);
+			IEnumerable<MemberProspect> memberProspects = prospector.GetMutableMemberProspects(type);
+			IDictionary<Prospect, object?> memberValues = GetValues(prospectValues, memberProspects);
+
+			membersInitializer.Initialize(type, fub, memberValues);
 
 			return fub;
 		}

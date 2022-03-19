@@ -12,12 +12,6 @@ namespace Fub.Creation
 		{
 			foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
 			{
-				// If the property has no getter, or the getter requires any parameters, skip the property
-				if (property.GetGetMethod()?.GetParameters().Any() ?? true)
-				{
-					continue;
-				}
-
 				if (property.GetSetMethod() == null)
 				{
 					continue;
@@ -28,11 +22,6 @@ namespace Fub.Creation
 				if (prospect != null)
 				{
 					property.SetValue(fub, values[prospect]);
-				}
-				else
-				{
-					throw new NotImplementedException();
-					//property.SetValue(fub, Create(property.PropertyType));
 				}
 			}
 		}
