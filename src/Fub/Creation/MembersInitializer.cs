@@ -26,6 +26,18 @@ namespace Fub.Creation
 					property.SetValue(fub, values[prospect]);
 				}
 			}
+
+			foreach (FieldInfo field in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
+			{
+				Prospect? prospect = values.Keys
+					.OfType<FieldProspect>()
+					.FirstOrDefault(f => f.MemberInfo == field);
+
+				if (prospect != null)
+				{
+					field.SetValue(fub, values[prospect]);
+				}
+			}
 		}
 	}
 }

@@ -61,7 +61,7 @@ namespace Fub.Tests
 
 			Struct fub = fubber.Fub();
 
-			Assert.Null(fub.@string);
+			Assert.Equal(string.Empty, fub.@string);
 			Assert.Equal(default, fub.integer);
 		}
 
@@ -88,6 +88,30 @@ namespace Fub.Tests
 
 			Assert.Null(fub.@string);
 			Assert.Equal(default, fub.integer);
+		}
+
+		[Fact]
+		public void Create_ClassWithTwoOverrides_ReturnsFub()
+		{
+			FubberBuilder<Class> builder = new();
+			Fubber<Class> fubber = builder.Build();
+
+			Class fub = fubber.Fub(f => f.@string, "Falafel", f => f.integer, 4096);
+
+			Assert.Equal("Falafel", fub.@string);
+			Assert.Equal(4096, fub.integer);
+		}
+
+		[Fact]
+		public void Create_StructWithTwoOverrides_ReturnsFub()
+		{
+			FubberBuilder<Struct> builder = new();
+			Fubber<Struct> fubber = builder.Build();
+
+			Struct fub = fubber.Fub(f => f.@string, "Falafel", f => f.integer, 4096);
+
+			Assert.Equal("Falafel", fub.@string);
+			Assert.Equal(4096, fub.integer);
 		}
 	}
 }
