@@ -1,0 +1,18 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: src/Fub/Fub.csproj
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: |
+      src/Fub.Tests/Fub.Tests.csproj
+      src/Fub.InternalTests/Fub.InternalTests.csproj
