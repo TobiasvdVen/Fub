@@ -19,9 +19,11 @@ steps:
       src/Fub.InternalTests/Fub.InternalTests.csproj
     configuration: Release
       
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
     packagesToPack: 'src/Fub/Fub.csproj'
+    nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: NugetPackageVersion
+    
