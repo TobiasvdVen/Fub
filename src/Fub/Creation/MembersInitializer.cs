@@ -17,7 +17,9 @@ namespace Fub.Creation
 					continue;
 				}
 
-				Prospect? prospect = values.Keys.FirstOrDefault(v => v is PropertyProspect prospect && prospect.MemberInfo == property);
+				Prospect? prospect = values.Keys
+					.OfType<PropertyProspect>()
+					.FirstOrDefault(p => p.MemberInfo == property);
 
 				if (prospect != null)
 				{
