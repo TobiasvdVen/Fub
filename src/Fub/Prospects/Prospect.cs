@@ -5,14 +5,12 @@ namespace Fub.Prospects
 {
 	public abstract class Prospect
 	{
-		public Prospect(ProspectInitialization initialization, Type type, bool nullable)
+		public Prospect(Type type, bool nullable)
 		{
-			Initialization = initialization;
 			Type = type;
 			Nullable = nullable;
 		}
 
-		public ProspectInitialization Initialization { get; }
 		public Type Type { get; }
 		public bool Nullable { get; }
 
@@ -33,7 +31,7 @@ namespace Fub.Prospects
 
 		public override int GetHashCode()
 		{
-			return new { Initialization, Type, Nullable }.GetHashCode();
+			return new { Type, Nullable }.GetHashCode();
 		}
 	}
 }
