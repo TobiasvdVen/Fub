@@ -29,12 +29,12 @@ steps:
     nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: NugetPackageVersion
-    packDirectory: '$(Build.ArtifactStagingDirectory)/kaas'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   name: Artifact
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)/kaas'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
     
