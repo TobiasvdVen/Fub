@@ -29,5 +29,5 @@ steps:
     nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: NugetPackageVersion
-    outputDir: '$(Build.ArtifactStagingDirectory)'
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
     
