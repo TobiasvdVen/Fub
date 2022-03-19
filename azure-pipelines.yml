@@ -9,3 +9,10 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: |
+      src/Fub.Tests/Fub.Tests.csproj
+      src/Fub.InternalTests/Fub.InternalTests.csproj
