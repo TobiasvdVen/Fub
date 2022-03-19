@@ -10,6 +10,8 @@
     </PropertyGroup>
 
     <PropertyGroup>
+		<PackageId>Fub</PackageId>
+		<Authors>Tobias van de Ven</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
