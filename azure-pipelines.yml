@@ -12,11 +12,17 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
+    majorVersion: 6
+    minorVersion: 0
+    patchVersion: 201
     command: 'build'
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
   inputs:
+    majorVersion: 6
+    minorVersion: 0
+    patchVersion: 201
     command: 'test'
     projects: |
       src/Fub.Tests/Fub.Tests.csproj
