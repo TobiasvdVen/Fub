@@ -29,5 +29,5 @@ steps:
     nobuild: true
     versioningScheme: byEnvVar
     versionEnvVar: NugetPackageVersion
-    packDirectory: '$(Build.ArtifactStagingDirectory)'
+    packDirectory: '$(Build.ArtifactStagingDirectory)/kaas'
     
