@@ -6,13 +6,35 @@ pool:
 
 steps:
 - task: DotNetCoreCLI@2
+  name: Build
   inputs:
     command: 'build'
     projects: src/Fub/Fub.csproj
-
+    arguments: -c Release
+    
 - task: DotNetCoreCLI@2
+  name: Test
   inputs:
     command: 'test'
     projects: |
       src/Fub.Tests/Fub.Tests.csproj
       src/Fub.InternalTests/Fub.InternalTests.csproj
+    arguments: -c Release
+      
+- task: DotNetCoreCLI@2
+  name: Pack
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/Fub/Fub.csproj'
+    nobuild: true
+    versioningScheme: byEnvVar
+    versionEnvVar: NugetPackageVersion
+    packDirectory: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  name: Artifact
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+    
