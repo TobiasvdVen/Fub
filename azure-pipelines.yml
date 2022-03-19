@@ -16,3 +16,9 @@ steps:
     projects: |
       src/Fub.Tests/Fub.Tests.csproj
       src/Fub.InternalTests/Fub.InternalTests.csproj
+      
+- task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: 'src/Fub/Fub.csproj'
+    versioningScheme: 'byBuildNumber'
