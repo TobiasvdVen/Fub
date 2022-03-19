@@ -21,4 +21,5 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: 'src/Fub/Fub.csproj'
-    versioningScheme: 'byBuildNumber'
+    versioningScheme: byEnvVar
+    versionEnvVar: NugetPackageVersion
