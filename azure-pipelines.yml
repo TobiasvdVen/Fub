@@ -9,6 +9,7 @@ steps:
   inputs:
     command: 'build'
     projects: src/Fub/Fub.csproj
+    configuration: Release
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -16,6 +17,7 @@ steps:
     projects: |
       src/Fub.Tests/Fub.Tests.csproj
       src/Fub.InternalTests/Fub.InternalTests.csproj
+    configuration: Release
       
 - task: NuGetCommand@2
   inputs:
