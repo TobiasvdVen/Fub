@@ -41,29 +41,6 @@ namespace Fub.Creation
 			return parameterProspects;
 		}
 
-		public IEnumerable<Prospect> GetProspects(Type type, ConstructorInfo constructor)
-		{
-			IEnumerable<ParameterInfo> parameters = constructor.GetParameters();
-
-			IEnumerable<MemberProspect> memberProspects = GetMemberProspects(type);
-
-			IEnumerable<Prospect> parameterProspects = parameters.Select(p =>
-			{
-				MemberProspect? associatedMember = memberProspects.FirstOrDefault(m => m.MemberInfo.Name.Equals(p.Name, StringComparison.OrdinalIgnoreCase));
-
-				if (associatedMember != null)
-				{
-					return new ParameterProspect(p, associatedMember.MemberInfo);
-				}
-				else
-				{
-					return new ParameterProspect(p);
-				}
-			});
-
-			return parameterProspects.Concat(memberProspects);
-		}
-
 		private IEnumerable<MemberProspect> GetMemberProspects(Type type, bool skipImmutable)
 		{
 			IEnumerable<MemberInfo> members = type
