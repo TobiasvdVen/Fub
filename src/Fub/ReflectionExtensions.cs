@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -25,7 +26,31 @@ namespace Fub
 			return memberInfo.IsProperty() || memberInfo.IsField();
 		}
 
-		public static bool IsNullable(this MemberInfo memberInfo)
+		public static bool IsNullable(this PropertyInfo propertyInfo)
+		{
+			Type type = propertyInfo.PropertyType;
+
+			if (type.IsValueType)
+			{
+				return type.IsNullableValueType();
+			}
+
+			return propertyInfo.IsNullableMember();
+		}
+
+		public static bool IsNullable(this FieldInfo fieldInfo)
+		{
+			Type type = fieldInfo.FieldType;
+
+			if (type.IsValueType)
+			{
+				return type.IsNullableValueType();
+			}
+
+			return fieldInfo.IsNullableMember();
+		}
+
+		private static bool IsNullableMember(this MemberInfo memberInfo)
 		{
 			byte? nullable = GetNullableAttributeByte(memberInfo.CustomAttributes);
 
@@ -191,6 +216,21 @@ namespace Fub
 			}
 
 			return null;
+		}
+
+		private static bool IsNullableValueType(this Type type)
+		{
+			if (!type.IsValueType)
+			{
+				return false;
+			}
+
+			if (!type.IsGenericType)
+			{
+				return false;
+			}
+
+			return type.GetGenericTypeDefinition() == typeof(Nullable<>);
 		}
 	}
 }

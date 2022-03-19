@@ -4,7 +4,7 @@ namespace Fub.Prospects
 {
 	internal class ParameterProspect : Prospect
 	{
-		public ParameterProspect(ParameterInfo parameterInfo, MemberInfo? matchingMember = null) : base(ProspectInitialization.Constructor, parameterInfo.IsNullable(), parameterInfo.ParameterType)
+		public ParameterProspect(ParameterInfo parameterInfo, MemberInfo? matchingMember = null) : base(ProspectInitialization.Constructor, parameterInfo.ParameterType, parameterInfo.IsNullable())
 		{
 			ParameterInfo = parameterInfo;
 			MatchingMember = matchingMember;

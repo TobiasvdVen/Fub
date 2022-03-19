@@ -34,6 +34,18 @@ namespace Fub.Tests
 			public int Integer { get; }
 		}
 
+#if NET5_0_OR_GREATER
+		public record Record(string String, int Integer) : IStringInt
+		{
+
+		}
+
+		public record struct RecordStruct(string String, int Integer) : IStringInt
+		{
+
+		}
+#endif
+
 		[Fact]
 		public void Create_ClassWithNoOverrides_ReturnsDefault()
 		{
@@ -47,16 +59,6 @@ namespace Fub.Tests
 		}
 
 #if NET5_0_OR_GREATER
-		public record Record(string String, int Integer) : IStringInt
-		{
-
-		}
-
-		public record struct RecordStruct(string String, int Integer) : IStringInt
-		{
-
-		}
-
 		[Fact]
 		public void Create_RecordWithNoOverrides_ReturnsDefault()
 		{
@@ -80,6 +82,43 @@ namespace Fub.Tests
 			Assert.NotNull(fub.String);
 			Assert.Equal(string.Empty, fub.String);
 			Assert.Equal(default, fub.Integer);
+		}
+
+		[Fact]
+		public void Create_ClassWithTwoOverrides_ReturnsDefault()
+		{
+			Create_WithTwoOverrides_ReturnsFub<Class>();
+		}
+
+		[Fact]
+		public void Create_StructWithTwoOverrides_ReturnsDefault()
+		{
+			Create_WithTwoOverrides_ReturnsFub<Struct>();
+		}
+
+#if NET5_0_OR_GREATER
+		[Fact]
+		public void Create_RecordWithTwoOverrides_ReturnsDefault()
+		{
+			Create_WithTwoOverrides_ReturnsFub<Record>();
+		}
+
+		[Fact]
+		public void Create_RecordStructWithTwoOverrides_ReturnsDefault()
+		{
+			Create_WithTwoOverrides_ReturnsFub<RecordStruct>();
+		}
+#endif
+
+		private void Create_WithTwoOverrides_ReturnsFub<T>() where T : IStringInt
+		{
+			FubberBuilder<T> builder = new();
+			Fubber<T> fubber = builder.Build();
+
+			IStringInt fub = fubber.Fub(f => f.Integer, 64, f => f.String, "Hogwarts");
+
+			Assert.Equal("Hogwarts", fub.String);
+			Assert.Equal(64, fub.Integer);
 		}
 
 		public struct StructWithNoConstructor : IStringInt

@@ -6,7 +6,7 @@ namespace Fub.Prospects
 {
 	internal abstract class MemberProspect : Prospect
 	{
-		public MemberProspect(ProspectInitialization initialization, Type type, MemberInfo memberInfo) : base(initialization, memberInfo.IsNullable(), type)
+		public MemberProspect(ProspectInitialization initialization, Type type, bool nullable, MemberInfo memberInfo) : base(initialization, type, nullable)
 		{
 			MemberInfo = memberInfo;
 		}
