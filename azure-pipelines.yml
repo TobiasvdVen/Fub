@@ -9,15 +9,15 @@ steps:
   inputs:
     command: 'build'
     projects: src/Fub/Fub.csproj
-    configuration: Release
-
+    arguments: -c Release
+    
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
     projects: |
       src/Fub.Tests/Fub.Tests.csproj
       src/Fub.InternalTests/Fub.InternalTests.csproj
-    configuration: Release
+    arguments: -c Release
       
 - task: DotNetCoreCLI@2
   inputs:
