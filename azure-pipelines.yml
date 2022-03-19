@@ -5,10 +5,18 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: CmdLine@2
+  inputs:
+    script: 'dotnet --version'
+    
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
     version: '6.0.201'
+
+- task: CmdLine@2
+  inputs:
+    script: 'dotnet --version'
 
 - task: DotNetCoreCLI@2
   inputs:
