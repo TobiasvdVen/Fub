@@ -39,16 +39,15 @@ namespace Fub.Creation
 			IConstructorResolver constructorResolver = constructorResolverFactory.CreateConstructorResolver(type);
 			ConstructorInfo? constructor = constructorResolver.Resolve();
 
+			object fub;
+
 			if (constructor != null)
 			{
-				return CreateWithConstructor(type, prospectValues, constructor);
+				fub = CreateWithConstructor(type, prospectValues, constructor);
 			}
-
-			object? fub = Activator.CreateInstance(type);
-
-			if (fub is null)
+			else
 			{
-				throw new FubException($"Failed to construct object of type {type}, {nameof(Activator.CreateInstance)} returned null.");
+				fub = Activator.CreateInstance(type) ?? throw new FubException($"Failed to construct object of type {type}, {nameof(Activator.CreateInstance)} returned null.");
 			}
 
 			IEnumerable<MemberProspect> prospects = prospector.GetMemberProspects(type);
@@ -71,13 +70,7 @@ namespace Fub.Creation
 				arguments.Add(value);
 			}
 
-			object fub = constructor.Invoke(arguments.ToArray());
-
-			IEnumerable<MemberProspect> memberProspects = prospector.GetMemberProspects(type);
-
-			InitializeMembers(fub, memberProspects, prospectValues);
-
-			return fub;
+			return constructor.Invoke(arguments.ToArray());
 		}
 
 		private void InitializeMembers(object fub, IEnumerable<MemberProspect> prospects, IProspectValues prospectValues)
