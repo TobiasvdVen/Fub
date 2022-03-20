@@ -13,32 +13,28 @@ namespace Fub.Creation
 		private readonly IConstructorResolverFactory constructorResolverFactory;
 		private readonly IProspector prospector;
 
-		private readonly MembersInitializer membersInitializer;
-
 		public Creator(IConstructorResolverFactory constructorResolverFactory, IProspector prospector)
 		{
 			this.constructorResolverFactory = constructorResolverFactory;
 			this.prospector = prospector;
-
-			membersInitializer = new();
 		}
 
 		public T Create<T>() where T : notnull
 		{
-			return (T)Create(typeof(T))!;
+			return (T)Create(typeof(T));
 		}
 
-		public object? Create(Type type)
+		public object Create(Type type)
 		{
 			return Create(type, new ProspectValues());
 		}
 
 		public T Create<T>(IProspectValues prospectValues) where T : notnull
 		{
-			return (T)Create(typeof(T), prospectValues)!;
+			return (T)Create(typeof(T), prospectValues);
 		}
 
-		public object? Create(Type type, IProspectValues prospectValues)
+		public object Create(Type type, IProspectValues prospectValues)
 		{
 			IConstructorResolver constructorResolver = constructorResolverFactory.CreateConstructorResolver(type);
 			ConstructorInfo? constructor = constructorResolver.Resolve();
@@ -50,16 +46,14 @@ namespace Fub.Creation
 
 			object? fub = Activator.CreateInstance(type);
 
-			if (fub == null)
+			if (fub is null)
 			{
 				throw new FubException($"Failed to construct object of type {type}, {nameof(Activator.CreateInstance)} returned null.");
 			}
 
 			IEnumerable<Prospect> prospects = prospector.GetMemberProspects(type);
 
-			IDictionary<Prospect, object?> values = GetValues(prospectValues, prospects);
-
-			membersInitializer.Initialize(type, fub, values);
+			InitializeProspects(fub, prospects, prospectValues);
 
 			return fub;
 		}
@@ -68,62 +62,56 @@ namespace Fub.Creation
 		{
 			IEnumerable<ParameterProspect> parameterProspects = prospector.GetParameterProspects(type, constructor);
 
-			IDictionary<Prospect, object?> parameterValues = GetValues(prospectValues, parameterProspects);
+			List<object?> arguments = new(parameterProspects.Count());
 
-			List<object?> arguments = new();
-
-			foreach (ParameterInfo parameter in constructor.GetParameters())
+			foreach (ParameterProspect prospect in parameterProspects)
 			{
-				Prospect? prospect = parameterValues.Keys.FirstOrDefault(v => v is ParameterProspect prospect && prospect.ParameterInfo == parameter);
-
-				if (prospect != null)
-				{
-					arguments.Add(parameterValues[prospect]);
-				}
-				else
-				{
-					arguments.Add(Create(parameter.ParameterType));
-				}
+				arguments.Add(GetValue(prospectValues, prospect));
 			}
 
 			object fub = constructor.Invoke(arguments.ToArray());
 
 			IEnumerable<MemberProspect> memberProspects = prospector.GetMemberProspects(type);
-			IDictionary<Prospect, object?> memberValues = GetValues(prospectValues, memberProspects);
 
-			membersInitializer.Initialize(type, fub, memberValues);
+			InitializeProspects(fub, memberProspects, prospectValues);
 
 			return fub;
 		}
 
-		private IDictionary<Prospect, object?> GetValues(IProspectValues prospectValues, IEnumerable<Prospect> prospects)
+		private void InitializeProspects(object fub, IEnumerable<Prospect> prospects, IProspectValues prospectValues)
 		{
-			Dictionary<Prospect, object?> values = new();
-
 			foreach (Prospect prospect in prospects)
 			{
-				if (prospectValues.TryGetProvider(prospect, out IValueProvider? valueProvider))
+				object? value = GetValue(prospectValues, prospect);
+
+				if (prospect is PropertyProspect propertyProspect)
 				{
-#if NET5_0_OR_GREATER
-					values[prospect] = valueProvider.GetValue();
-#else
-					values[prospect] = valueProvider!.GetValue();
-#endif
+					propertyProspect.PropertyInfo.SetValue(fub, value);
 				}
-				else
+				else if (prospect is FieldProspect fieldProspect)
 				{
-					if (prospect.Nullable)
-					{
-						values[prospect] = null;
-					}
-					else
-					{
-						values[prospect] = Create(prospect.Type);
-					}
+					fieldProspect.FieldInfo.SetValue(fub, value);
 				}
 			}
+		}
 
-			return values;
+		private object? GetValue(IProspectValues prospectValues, Prospect prospect)
+		{
+			if (prospectValues.TryGetProvider(prospect, out IValueProvider? valueProvider))
+			{
+#if NET5_0_OR_GREATER
+				return valueProvider.GetValue();
+#else
+				return valueProvider!.GetValue();
+#endif
+			}
+
+			if (prospect.Nullable)
+			{
+				return null;
+			}
+
+			return Create(prospect.Type);
 		}
 	}
 }
