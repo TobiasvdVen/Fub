@@ -54,11 +54,16 @@ namespace Fub
 		{
 			if (expression.Body is MemberExpression memberExpression)
 			{
+				if (!memberExpression.Member.IsNullableMember() && value is null)
+				{
+					throw new ArgumentException($"A value of {null} cannot be provided to non-nullable member {memberExpression.Member.Name} of type {memberExpression.Member.DeclaringType?.Name}.");
+				}
+
 				prospectValues.SetProvider(Prospect.FromMember(memberExpression.Member), new FixedValueProvider<TProperty>(value));
 			}
 			else
 			{
-				throw new InvalidOperationException($"Expression must be a {nameof(MemberExpression)}.");
+				throw new ArgumentException($"Expression must be a {nameof(MemberExpression)}.");
 			}
 		}
 	}

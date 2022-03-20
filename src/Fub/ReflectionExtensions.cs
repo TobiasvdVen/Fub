@@ -50,8 +50,13 @@ namespace Fub
 			return fieldInfo.IsNullableMember();
 		}
 
-		private static bool IsNullableMember(this MemberInfo memberInfo)
+		public static bool IsNullableMember(this MemberInfo memberInfo)
 		{
+			if (!memberInfo.IsPropertyOrField())
+			{
+				return false;
+			}
+
 			byte? nullable = GetNullableAttributeByte(memberInfo.CustomAttributes);
 
 			if (nullable == NotNullable)

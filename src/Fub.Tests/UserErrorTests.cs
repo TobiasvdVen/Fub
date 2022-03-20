@@ -1,4 +1,5 @@
 ﻿using Fub.Creation;
+using Fub.Tests.Models;
 using Fub.ValueProvisioning;
 using Moq;
 using System;
@@ -22,7 +23,7 @@ namespace Fub.Tests
 		{
 			Fubber<HasMethod> fubber = new FubberBuilder<HasMethod>().Build();
 
-			InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => fubber.Fub(f => "", ""));
+			ArgumentException ex = Assert.Throws<ArgumentException>(() => fubber.Fub(f => "", ""));
 
 			Assert.Equal($"Expression must be a {nameof(MemberExpression)}.", ex.Message);
 		}
@@ -33,7 +34,7 @@ namespace Fub.Tests
 		}
 
 		[Fact]
-		public void FubBuilder_ForInterface_Throws()
+		public void FubberBuilder_ForInterface_Throws()
 		{
 			Assert.Throws<InvalidOperationException>(() => new FubberBuilder<IMyInterface>());
 		}
@@ -45,6 +46,26 @@ namespace Fub.Tests
 			Mock<IProspectValues> prospectValues = new();
 
 			Assert.Throws<InvalidOperationException>(() => new Fubber<IMyInterface>(creator.Object, prospectValues.Object));
+		}
+
+		[Fact]
+		public void Fub_NullForNonNullable_Throws()
+		{
+			FubberBuilder<StringInt.Class> builder = new();
+			Fubber<StringInt.Class> fubber = builder.Build();
+
+			Assert.Throws<ArgumentException>(() => fubber.Fub(f => f.String, null));
+		}
+
+		[Fact]
+		public void Make_NullForNonNullable_Throws()
+		{
+			FubberBuilder<StringInt.Class> builder = new();
+
+			Assert.Throws<ArgumentException>(() =>
+			{
+				builder.Make(f => f.String, null);
+			});
 		}
 	}
 }
