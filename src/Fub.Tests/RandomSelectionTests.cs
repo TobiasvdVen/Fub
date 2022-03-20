@@ -18,7 +18,7 @@ namespace Fub.Tests
 
 			FubberBuilder<StringInt.Class> builder = new();
 			Fubber<StringInt.Class> fubber = builder
-				.For(c => c.Integer, Provide.From(new int[] { 1, 2, 3 }, random.Object))
+				.For(c => c.Integer, Provide.From(new int[] { 1, 2, 3 }).Randomly(random.Object))
 				.Build();
 
 			StringInt.Class fub = fubber.Fub();
