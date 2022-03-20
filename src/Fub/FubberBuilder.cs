@@ -1,6 +1,7 @@
 ﻿using Fub.Creation;
 using Fub.Creation.ConstructorResolvers;
 using Fub.Prospects;
+using Fub.Utilities;
 using Fub.ValueProvisioning;
 using System;
 using System.Linq.Expressions;
@@ -39,28 +40,19 @@ namespace Fub
 
 		public FubberBuilder<T> Make<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
 		{
-			if (expression.Body is MemberExpression memberExpression)
-			{
-				DefaultValues.SetProvider(Prospect.FromMember(memberExpression.Member), new FixedValueProvider(value));
-			}
-			else
-			{
-				throw new ArgumentException($"Expression must be of type {nameof(MemberExpression)} but was {expression.GetType()}.");
-			}
+			MemberExpression memberExpression = FubAssert.MemberExpression(expression);
+			FubAssert.NullSafe(memberExpression, value);
+
+			DefaultValues.SetProvider(Prospect.FromMember(memberExpression.Member), new FixedValueProvider(value));
 
 			return this;
 		}
 
 		public FubberBuilder<T> For<TProperty>(Expression<Func<T, TProperty>> expression, IValueProvider<TProperty> valueProvider)
 		{
-			if (expression.Body is MemberExpression memberExpression)
-			{
-				DefaultValues.SetProvider(Prospect.FromMember(memberExpression.Member), valueProvider);
-			}
-			else
-			{
-				throw new ArgumentException($"Expression must be of type {nameof(MemberExpression)} but was {expression.GetType()}.");
-			}
+			MemberExpression memberExpression = FubAssert.MemberExpression(expression);
+
+			DefaultValues.SetProvider(Prospect.FromMember(memberExpression.Member), valueProvider);
 
 			return this;
 		}

@@ -14,12 +14,7 @@ namespace Fub
 
 		public Fubber(ICreator creator, IProspectValues defaultValues)
 		{
-			Type type = typeof(T);
-
-			if (type.IsInterface)
-			{
-				throw new InvalidOperationException($"Only concrete types can be Fubbed, {type.Name} is an interface.");
-			}
+			FubAssert.ConcreteType<T>();
 
 			this.creator = creator;
 			this.defaultValues = defaultValues;
@@ -53,19 +48,10 @@ namespace Fub
 
 		private void OverrideAccordingToExpression<TProperty>(IProspectValues prospectValues, Expression<Func<T, TProperty>> expression, TProperty value)
 		{
-			if (expression.Body is MemberExpression memberExpression)
-			{
-				if (!memberExpression.Member.IsNullableMember() && value is null)
-				{
-					throw new ArgumentException($"A value of {null} cannot be provided to non-nullable member {memberExpression.Member.Name} of type {memberExpression.Member.DeclaringType?.Name}.");
-				}
+			MemberExpression memberExpression = FubAssert.MemberExpression(expression);
+			FubAssert.NullSafe(memberExpression, value);
 
-				prospectValues.SetProvider(Prospect.FromMember(memberExpression.Member), new FixedValueProvider<TProperty>(value));
-			}
-			else
-			{
-				throw new ArgumentException($"Expression must be a {nameof(MemberExpression)}.");
-			}
+			prospectValues.SetProvider(Prospect.FromMember(memberExpression.Member), new FixedValueProvider<TProperty>(value));
 		}
 	}
 }
