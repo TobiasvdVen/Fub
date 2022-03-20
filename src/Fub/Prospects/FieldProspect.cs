@@ -7,6 +7,9 @@ namespace Fub.Prospects
 	{
 		public FieldProspect(FieldInfo fieldInfo) : base(fieldInfo.FieldType, fieldInfo.IsNullable(), fieldInfo)
 		{
+			FieldInfo = fieldInfo;
 		}
+
+		public FieldInfo FieldInfo { get; }
 	}
 }

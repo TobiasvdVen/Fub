@@ -10,32 +10,15 @@ namespace Fub.Creation
 	{
 		public void Initialize(Type type, object fub, IDictionary<Prospect, object?> values)
 		{
-			foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+			foreach (Prospect prospect in values.Keys)
 			{
-				if (property.GetSetMethod() == null)
+				if (prospect is PropertyProspect propertyProspect)
 				{
-					continue;
+					propertyProspect.PropertyInfo.SetValue(fub, values[prospect]);
 				}
-
-				Prospect? prospect = values.Keys
-					.OfType<PropertyProspect>()
-					.FirstOrDefault(p => p.MemberInfo == property);
-
-				if (prospect != null)
+				else if (prospect is FieldProspect fieldProspect)
 				{
-					property.SetValue(fub, values[prospect]);
-				}
-			}
-
-			foreach (FieldInfo field in type.GetFields(BindingFlags.Public | BindingFlags.Instance))
-			{
-				Prospect? prospect = values.Keys
-					.OfType<FieldProspect>()
-					.FirstOrDefault(f => f.MemberInfo == field);
-
-				if (prospect != null)
-				{
-					field.SetValue(fub, values[prospect]);
+					fieldProspect.FieldInfo.SetValue(fub, values[prospect]);
 				}
 			}
 		}

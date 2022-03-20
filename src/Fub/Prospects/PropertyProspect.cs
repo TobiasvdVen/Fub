@@ -7,6 +7,9 @@ namespace Fub.Prospects
 	{
 		public PropertyProspect(PropertyInfo propertyInfo) : base(propertyInfo.PropertyType, propertyInfo.IsNullable(), propertyInfo)
 		{
+			PropertyInfo = propertyInfo;
 		}
+
+		public PropertyInfo PropertyInfo { get; }
 	}
 }
