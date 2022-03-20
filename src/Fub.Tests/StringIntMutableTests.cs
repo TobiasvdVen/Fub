@@ -136,8 +136,8 @@ namespace Fub.Tests
 			FubberBuilder<T> builder = new();
 
 			Fubber<T> noCtorMutable = builder
-				.WithDefault(m => m.String, "Katie")
-				.WithDefault(m => m.Integer, 22)
+				.Make(m => m.String, "Katie")
+				.Make(m => m.Integer, 22)
 				.Build();
 
 			IStringIntMutable fub = noCtorMutable.Fub();

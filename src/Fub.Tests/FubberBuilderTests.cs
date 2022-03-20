@@ -49,8 +49,8 @@ namespace Fub.Tests
 			int expectedAge = 256;
 
 			Fubber<SomeClass> fubber = builder
-				.WithDefault(s => s.Name, expectedName)
-				.WithDefault(s => s.Age, expectedAge)
+				.Make(s => s.Name, expectedName)
+				.Make(s => s.Age, expectedAge)
 				.Build();
 
 			SomeClass fub = fubber.Fub();
@@ -74,7 +74,7 @@ namespace Fub.Tests
 		{
 			FubberBuilder<Goodbye> builder = new();
 
-			Assert.Throws<ArgumentException>(() => builder.WithDefault(g => "", ""));
+			Assert.Throws<ArgumentException>(() => builder.Make(g => "", ""));
 		}
 	}
 }

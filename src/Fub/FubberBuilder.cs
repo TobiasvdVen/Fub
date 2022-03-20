@@ -37,11 +37,25 @@ namespace Fub
 			return new Fubber<T>(creator, DefaultValues);
 		}
 
-		public FubberBuilder<T> WithDefault<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
+		public FubberBuilder<T> Make<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
 		{
 			if (expression.Body is MemberExpression memberExpression)
 			{
 				DefaultValues.SetProvider(Prospect.FromMember(memberExpression.Member), new FixedValueProvider(value));
+			}
+			else
+			{
+				throw new ArgumentException($"Expression must be of type {nameof(MemberExpression)} but was {expression.GetType()}.");
+			}
+
+			return this;
+		}
+
+		public FubberBuilder<T> For<TProperty>(Expression<Func<T, TProperty>> expression, IValueProvider<TProperty> valueProvider)
+		{
+			if (expression.Body is MemberExpression memberExpression)
+			{
+				DefaultValues.SetProvider(Prospect.FromMember(memberExpression.Member), valueProvider);
 			}
 			else
 			{

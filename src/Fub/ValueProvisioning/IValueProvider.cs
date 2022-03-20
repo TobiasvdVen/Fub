@@ -5,8 +5,8 @@
 		object? GetValue();
 	}
 
-	public interface IValueProvider<T>
+	public interface IValueProvider<T> : IValueProvider
 	{
-		T GetValue();
+		new T GetValue();
 	}
 }
