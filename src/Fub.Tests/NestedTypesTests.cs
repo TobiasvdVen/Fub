@@ -5,58 +5,45 @@ namespace Fub.Tests
 {
 	public class NestedTypesTests
 	{
-		public class HasEmptyNestedType
+		[Fact]
+		public void Create_ClassHasEmpty_ReturnsDefault()
 		{
-			public HasEmptyNestedType(Empty.Class empty)
-			{
-				Empty = empty;
-			}
-
-			public Empty.Class Empty { get; }
+			Create_HasEmpty_ReturnsDefault<HasEmpty.Class>();
 		}
 
 		[Fact]
-		public void Create_HasEmptyNestedType_ReturnsDefault()
+		public void Create_StructHasEmpty_ReturnsDefault()
 		{
-			FubberBuilder<HasEmptyNestedType> builder = new();
-			Fubber<HasEmptyNestedType> fubber = builder.Build();
+			Create_HasEmpty_ReturnsDefault<HasEmpty.Struct>();
+		}
 
-			HasEmptyNestedType fub = fubber.Fub();
+		private void Create_HasEmpty_ReturnsDefault<T>() where T : IHasEmpty
+		{
+			FubberBuilder<T> builder = new();
+			Fubber<T> fubber = builder.Build();
+
+			IHasEmpty fub = fubber.Fub();
 
 			Assert.NotNull(fub.Empty);
 		}
 
-		public class Simple
+		public class HasSimpleComposite
 		{
-			public Simple(string name, bool boolean, Empty.Class empty)
-			{
-				Name = name;
-				Boolean = boolean;
-				Empty = empty;
-			}
-
-			public string Name { get; }
-			public bool Boolean { get; }
-			public Empty.Class Empty { get; }
-		}
-
-		public class HasSimpleNestedType
-		{
-			public HasSimpleNestedType(Simple simple)
+			public HasSimpleComposite(SimpleComposite.Class simple)
 			{
 				Simple = simple;
 			}
 
-			public Simple Simple { get; }
+			public SimpleComposite.Class Simple { get; }
 		}
 
 		[Fact]
 		public void Create_HasSimpleNestedType_WithNoOverrides_ReturnsDefault()
 		{
-			FubberBuilder<HasSimpleNestedType> builder = new();
-			Fubber<HasSimpleNestedType> fubber = builder.Build();
+			FubberBuilder<HasSimpleComposite> builder = new();
+			Fubber<HasSimpleComposite> fubber = builder.Build();
 
-			HasSimpleNestedType fub = fubber.Fub();
+			HasSimpleComposite fub = fubber.Fub();
 
 			Assert.Equal(string.Empty, fub.Simple.Name);
 			Assert.Equal(default, fub.Simple.Boolean);
@@ -66,10 +53,10 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_HasSimpleNestedType_WithSimpleOverride_ReturnsFub()
 		{
-			FubberBuilder<HasSimpleNestedType> builder = new();
-			Fubber<HasSimpleNestedType> fubber = builder.Build();
+			FubberBuilder<HasSimpleComposite> builder = new();
+			Fubber<HasSimpleComposite> fubber = builder.Build();
 
-			HasSimpleNestedType fub = fubber.Fub(h => h.Simple, new Simple("Barney", true, new Empty.Class()));
+			HasSimpleComposite fub = fubber.Fub(h => h.Simple, new SimpleComposite.Class("Barney", true, new Empty.Class()));
 
 			Assert.Equal("Barney", fub.Simple.Name);
 			Assert.Equal(true, fub.Simple.Boolean);
