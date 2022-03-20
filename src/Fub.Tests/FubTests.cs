@@ -1,46 +1,35 @@
-﻿using Xunit;
+﻿using Fub.Tests.Models;
+using Xunit;
 
 namespace Fub.Tests
 {
 	public class FubTests
 	{
-		public class BasicModel
-		{
-			public BasicModel(int integer, string text)
-			{
-				Integer = integer;
-				Text = text;
-			}
-
-			public int Integer { get; }
-			public string Text { get; }
-		}
-
 		[Fact]
 		public void Fub_WithNoOverrides_ReturnsDefault()
 		{
-			BasicModel fub = Fub<BasicModel>.Simple();
+			StringInt.Class fub = Fub<StringInt.Class>.Simple();
 
 			Assert.Equal(0, fub.Integer);
-			Assert.Equal(string.Empty, fub.Text);
+			Assert.Equal(string.Empty, fub.String);
 		}
 
 		[Fact]
 		public void Fub_WithStringOverride_ReturnsFub()
 		{
-			BasicModel fub = Fub<BasicModel>.Simple(b => b.Text, "Override");
+			StringInt.Class fub = Fub<StringInt.Class>.Simple(b => b.String, "Override");
 
 			Assert.Equal(0, fub.Integer);
-			Assert.Equal("Override", fub.Text);
+			Assert.Equal("Override", fub.String);
 		}
 
 		[Fact]
 		public void Fub_WithTwoOverrides_ReturnsFub()
 		{
-			BasicModel fub = Fub<BasicModel>.Simple(b => b.Text, "Apple", b => b.Integer, 16);
+			StringInt.Class fub = Fub<StringInt.Class>.Simple(b => b.String, "Apple", b => b.Integer, 16);
 
 			Assert.Equal(16, fub.Integer);
-			Assert.Equal("Apple", fub.Text);
+			Assert.Equal("Apple", fub.String);
 		}
 	}
 }

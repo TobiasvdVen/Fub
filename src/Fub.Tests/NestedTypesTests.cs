@@ -1,22 +1,18 @@
-﻿using Xunit;
+﻿using Fub.Tests.Models;
+using Xunit;
 
 namespace Fub.Tests
 {
 	public class NestedTypesTests
 	{
-		public class Empty
-		{
-
-		}
-
 		public class HasEmptyNestedType
 		{
-			public HasEmptyNestedType(Empty empty)
+			public HasEmptyNestedType(Empty.Class empty)
 			{
 				Empty = empty;
 			}
 
-			public Empty Empty { get; }
+			public Empty.Class Empty { get; }
 		}
 
 		[Fact]
@@ -32,7 +28,7 @@ namespace Fub.Tests
 
 		public class Simple
 		{
-			public Simple(string name, bool boolean, Empty empty)
+			public Simple(string name, bool boolean, Empty.Class empty)
 			{
 				Name = name;
 				Boolean = boolean;
@@ -41,7 +37,7 @@ namespace Fub.Tests
 
 			public string Name { get; }
 			public bool Boolean { get; }
-			public Empty Empty { get; }
+			public Empty.Class Empty { get; }
 		}
 
 		public class HasSimpleNestedType
@@ -73,7 +69,7 @@ namespace Fub.Tests
 			FubberBuilder<HasSimpleNestedType> builder = new();
 			Fubber<HasSimpleNestedType> fubber = builder.Build();
 
-			HasSimpleNestedType fub = fubber.Fub(h => h.Simple, new Simple("Barney", true, new Empty()));
+			HasSimpleNestedType fub = fubber.Fub(h => h.Simple, new Simple("Barney", true, new Empty.Class()));
 
 			Assert.Equal("Barney", fub.Simple.Name);
 			Assert.Equal(true, fub.Simple.Boolean);

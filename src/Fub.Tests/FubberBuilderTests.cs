@@ -1,4 +1,5 @@
 ﻿using Fub.Creation;
+using Fub.Tests.Models;
 using Fub.ValueProvisioning;
 using Moq;
 using System;
@@ -8,19 +9,14 @@ namespace Fub.Tests
 {
 	public class FubberBuilderTests
 	{
-		private class SimpleCreateable
-		{
-
-		}
-
 		[Fact]
 		public void Build_Default_ReturnsFub()
 		{
-			FubberBuilder<SimpleCreateable> builder = new();
+			FubberBuilder<Empty.Class> builder = new();
 
-			Fubber<SimpleCreateable> fubber = builder.Build();
+			Fubber<Empty.Class> fubber = builder.Build();
 
-			SimpleCreateable fub = fubber.Fub();
+			Empty.Class fub = fubber.Fub();
 
 			Assert.NotNull(fub);
 		}
@@ -28,14 +24,14 @@ namespace Fub.Tests
 		[Fact]
 		public void Build_WithCustomCreator_InjectsCreator()
 		{
-			FubberBuilder<SimpleCreateable> builder = new();
+			FubberBuilder<Empty.Class> builder = new();
 			Mock<ICreator> creator = new();
 
-			Fubber<SimpleCreateable> fubber = builder.UseCreator(creator.Object).Build();
+			Fubber<Empty.Class> fubber = builder.UseCreator(creator.Object).Build();
 
 			fubber.Fub();
 
-			creator.Verify(c => c.Create<SimpleCreateable>(It.IsAny<IProspectValues>()));
+			creator.Verify(c => c.Create<Empty.Class>(It.IsAny<IProspectValues>()));
 		}
 
 		public class SomeClass

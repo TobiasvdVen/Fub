@@ -9,7 +9,7 @@ namespace Fub.Tests
 {
 	public class UserErrorTests
 	{
-		private class HiThere
+		private class HasMethod
 		{
 			public void MyMethod()
 			{
@@ -20,7 +20,7 @@ namespace Fub.Tests
 		[Fact]
 		public void Create_WithNonPropertyOrFieldExpression_Throws()
 		{
-			Fubber<HiThere> fubber = new FubberBuilder<HiThere>().Build();
+			Fubber<HasMethod> fubber = new FubberBuilder<HasMethod>().Build();
 
 			InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => fubber.Fub(f => "", ""));
 

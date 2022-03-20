@@ -1,29 +1,20 @@
-﻿using Xunit;
+﻿using Fub.Tests.Models;
+using Xunit;
 
 namespace Fub.Tests
 {
 	public class NullableDefaultsTests
 	{
-		public class Thing
-		{
-			public Thing(int value)
-			{
-				Value = value;
-			}
-
-			public int Value { get; }
-		}
-
 		public class Constructor
 		{
-			public Constructor(Thing thing, Thing? nullableThing)
+			public Constructor(StringInt.Class thing, StringInt.Class? nullableThing)
 			{
 				Thing = thing;
 				NullableThing = nullableThing;
 			}
 
-			public Thing Thing { get; }
-			public Thing? NullableThing { get; }
+			public StringInt.Class Thing { get; }
+			public StringInt.Class? NullableThing { get; }
 		}
 
 		[Fact]
@@ -39,13 +30,13 @@ namespace Fub.Tests
 
 		public class Mutable
 		{
-			public Mutable(Thing thing)
+			public Mutable(StringInt.Class thing)
 			{
 				Thing = thing;
 			}
 
-			public Thing Thing { get; set; }
-			public Thing? NullableThing { get; set; }
+			public StringInt.Class Thing { get; set; }
+			public StringInt.Class? NullableThing { get; set; }
 		}
 
 		[Fact]
