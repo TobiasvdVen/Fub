@@ -1,5 +1,6 @@
 ﻿using Fub.Prospects;
 using Fub.ValueProvisioning;
+using Fub.ValueProvisioning.ValueProviders;
 using System.Reflection;
 using Xunit;
 

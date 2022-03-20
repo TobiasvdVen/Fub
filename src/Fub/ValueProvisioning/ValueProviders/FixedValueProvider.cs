@@ -1,6 +1,4 @@
-﻿using Fub.ValueProvisioning.ValueProviders;
-
-namespace Fub.ValueProvisioning
+﻿namespace Fub.ValueProvisioning.ValueProviders
 {
 	internal class FixedValueProvider : IValueProvider
 	{

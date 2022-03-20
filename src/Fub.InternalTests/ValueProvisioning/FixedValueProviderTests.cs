@@ -1,4 +1,5 @@
 ﻿using Fub.ValueProvisioning;
+using Fub.ValueProvisioning.ValueProviders;
 using Xunit;
 
 namespace Fub.InternalTests.ValueProvidersTests

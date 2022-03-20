@@ -2,6 +2,7 @@
 using Fub.Prospects;
 using Fub.Utilities;
 using Fub.ValueProvisioning;
+using Fub.ValueProvisioning.ValueProviders;
 using System;
 using System.Linq.Expressions;
 
