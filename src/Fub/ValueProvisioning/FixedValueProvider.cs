@@ -1,4 +1,6 @@
-﻿namespace Fub.ValueProvisioning
+﻿using Fub.ValueProvisioning.ValueProviders;
+
+namespace Fub.ValueProvisioning
 {
 	internal class FixedValueProvider : IValueProvider
 	{
@@ -15,7 +17,7 @@
 		}
 	}
 
-	internal class FixedValueProvider<T> : IValueProvider, IValueProvider<T>
+	internal class FixedValueProvider<T> : GenericProvider<T>
 	{
 		private readonly T value;
 
@@ -24,14 +26,9 @@
 			this.value = value;
 		}
 
-		T IValueProvider<T>.GetValue()
+		public override T GetValue()
 		{
 			return value;
-		}
-
-		object? IValueProvider.GetValue()
-		{
-			return ((IValueProvider<T>)this).GetValue();
 		}
 	}
 }

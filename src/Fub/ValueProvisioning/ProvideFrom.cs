@@ -18,5 +18,10 @@ namespace Fub.ValueProvisioning
 		{
 			return new RandomSelectionProvider<T>(values, random ?? new RandomAdapter(new Random()));
 		}
+
+		public IValueProvider<T> Sequentially()
+		{
+			return new SequentialSelectionProvider<T>(values);
+		}
 	}
 }

@@ -11,7 +11,7 @@ namespace Fub.Tests
 		[InlineData(0, 1)]
 		[InlineData(1, 2)]
 		[InlineData(2, 3)]
-		public void Fub_GivenSelectionOfOne_ReturnsFub(int index, int expected)
+		public void Fub_GivenSelection_ReturnsFubWithRandom(int index, int expected)
 		{
 			Mock<IRandom> random = new();
 			random.Setup(random => random.Next(2)).Returns(index);
