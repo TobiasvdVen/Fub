@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Fub
+namespace Fub.Utilities
 {
 	internal static class ReflectionExtensions
 	{
@@ -11,22 +11,22 @@ namespace Fub
 		private const byte NotNullable = 1;
 		private const byte Nullable = 2;
 
-		public static bool IsProperty(this MemberInfo memberInfo)
+		internal static bool IsProperty(this MemberInfo memberInfo)
 		{
 			return memberInfo is PropertyInfo;
 		}
 
-		public static bool IsField(this MemberInfo memberInfo)
+		internal static bool IsField(this MemberInfo memberInfo)
 		{
 			return memberInfo is FieldInfo;
 		}
 
-		public static bool IsPropertyOrField(this MemberInfo memberInfo)
+		internal static bool IsPropertyOrField(this MemberInfo memberInfo)
 		{
 			return memberInfo.IsProperty() || memberInfo.IsField();
 		}
 
-		public static bool IsNullable(this PropertyInfo propertyInfo)
+		internal static bool IsNullable(this PropertyInfo propertyInfo)
 		{
 			Type type = propertyInfo.PropertyType;
 
@@ -38,7 +38,7 @@ namespace Fub
 			return propertyInfo.IsNullableMember();
 		}
 
-		public static bool IsNullable(this FieldInfo fieldInfo)
+		internal static bool IsNullable(this FieldInfo fieldInfo)
 		{
 			Type type = fieldInfo.FieldType;
 
@@ -50,7 +50,7 @@ namespace Fub
 			return fieldInfo.IsNullableMember();
 		}
 
-		public static bool IsNullableMember(this MemberInfo memberInfo)
+		internal static bool IsNullableMember(this MemberInfo memberInfo)
 		{
 			if (!memberInfo.IsPropertyOrField())
 			{
@@ -114,7 +114,7 @@ namespace Fub
 			return true;
 		}
 
-		public static bool IsNullable(this ParameterInfo parameterInfo)
+		internal static bool IsNullable(this ParameterInfo parameterInfo)
 		{
 			byte? nullable = GetNullableAttributeByte(parameterInfo.CustomAttributes);
 

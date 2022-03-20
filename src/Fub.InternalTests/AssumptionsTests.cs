@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Fub.Utilities;
+using System.Linq;
 using System.Reflection;
 using Xunit;
 
