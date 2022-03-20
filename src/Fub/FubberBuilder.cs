@@ -11,7 +11,7 @@ namespace Fub
 {
 	public class FubberBuilder<T> where T : notnull
 	{
-		private readonly IConstructorResolverFactory constructorResolverFactory;
+		private readonly ConstructorResolverFactory constructorResolverFactory;
 
 		public FubberBuilder()
 		{
