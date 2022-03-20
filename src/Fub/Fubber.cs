@@ -26,7 +26,7 @@ namespace Fub
 			return creator.Create<T>(defaultValues);
 		}
 
-		public T Fub<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
+		public T Fub<TMember>(Expression<Func<T, TMember>> expression, TMember value)
 		{
 			IProspectValues prospectValues = defaultValues.Clone();
 
@@ -35,9 +35,9 @@ namespace Fub
 			return creator.Create<T>(prospectValues);
 		}
 
-		public T Fub<TProperty1, TProperty2>(
-			Expression<Func<T, TProperty1>> expression1, TProperty1 value1,
-			Expression<Func<T, TProperty2>> expression2, TProperty2 value2)
+		public T Fub<TMember1, TMember2>(
+			Expression<Func<T, TMember1>> expression1, TMember1 value1,
+			Expression<Func<T, TMember2>> expression2, TMember2 value2)
 		{
 			IProspectValues prospectValues = defaultValues.Clone();
 
@@ -47,12 +47,12 @@ namespace Fub
 			return creator.Create<T>(prospectValues);
 		}
 
-		private void OverrideAccordingToExpression<TProperty>(IProspectValues prospectValues, Expression<Func<T, TProperty>> expression, TProperty value)
+		private void OverrideAccordingToExpression<TMember>(IProspectValues prospectValues, Expression<Func<T, TMember>> expression, TMember value)
 		{
 			MemberExpression memberExpression = FubAssert.MemberExpression(expression);
 			FubAssert.NullSafe(memberExpression, value);
 
-			prospectValues.SetProvider(Prospect.FromMember(memberExpression.Member), new FixedValueProvider<TProperty>(value));
+			prospectValues.SetProvider(Prospect.FromMember(memberExpression.Member), new FixedValueProvider<TMember>(value));
 		}
 	}
 }

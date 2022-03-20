@@ -16,7 +16,7 @@ namespace Fub.Utilities
 			}
 		}
 
-		internal static MemberExpression MemberExpression<T, TProperty>(Expression<Func<T, TProperty>> expression)
+		internal static MemberExpression MemberExpression<T, TMember>(Expression<Func<T, TMember>> expression)
 		{
 			if (expression.Body is MemberExpression memberExpression)
 			{
@@ -26,7 +26,7 @@ namespace Fub.Utilities
 			throw new ArgumentException($"Expression must be a {nameof(MemberExpression)}.");
 		}
 
-		internal static void NullSafe<TProperty>(MemberExpression memberExpression, TProperty value)
+		internal static void NullSafe<TMember>(MemberExpression memberExpression, TMember value)
 		{
 			if (!memberExpression.Member.IsNullableMember() && value is null)
 			{

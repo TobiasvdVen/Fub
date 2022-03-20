@@ -12,14 +12,14 @@ namespace Fub
 			return fubber.Fub();
 		}
 
-		public static T Simple<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
+		public static T Simple<TMember>(Expression<Func<T, TMember>> expression, TMember value)
 		{
 			return fubber.Fub(expression, value);
 		}
 
-		public static T Simple<TProperty1, TProperty2>(
-			Expression<Func<T, TProperty1>> expression1, TProperty1 value1,
-			Expression<Func<T, TProperty2>> expression2, TProperty2 value2)
+		public static T Simple<TMember1, TMember2>(
+			Expression<Func<T, TMember1>> expression1, TMember1 value1,
+			Expression<Func<T, TMember2>> expression2, TMember2 value2)
 		{
 			return fubber.Fub(expression1, value1, expression2, value2);
 		}

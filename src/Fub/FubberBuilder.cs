@@ -39,7 +39,7 @@ namespace Fub
 			return new Fubber<T>(creator, DefaultValues);
 		}
 
-		public FubberBuilder<T> Make<TProperty>(Expression<Func<T, TProperty>> expression, TProperty value)
+		public FubberBuilder<T> Make<TMember>(Expression<Func<T, TMember>> expression, TMember value)
 		{
 			MemberExpression memberExpression = FubAssert.MemberExpression(expression);
 			FubAssert.NullSafe(memberExpression, value);
@@ -49,7 +49,7 @@ namespace Fub
 			return this;
 		}
 
-		public FubberBuilder<T> For<TProperty>(Expression<Func<T, TProperty>> expression, IValueProvider<TProperty> valueProvider)
+		public FubberBuilder<T> For<TMember>(Expression<Func<T, TMember>> expression, IValueProvider<TMember> valueProvider)
 		{
 			MemberExpression memberExpression = FubAssert.MemberExpression(expression);
 
