@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Fub.Utilities
 {
@@ -30,6 +31,14 @@ namespace Fub.Utilities
 			if (!memberExpression.Member.IsNullableMember() && value is null)
 			{
 				throw new ArgumentException($"A value of {null} cannot be provided to non-nullable member {memberExpression.Member.Name} of type {memberExpression.Member.DeclaringType?.Name}.");
+			}
+		}
+
+		internal static void ValidConstructor<T>(ConstructorInfo constructor)
+		{
+			if (constructor.DeclaringType != typeof(T))
+			{
+				throw new ArgumentException($"Invalid constructor, expected declaring type {typeof(T).Name}, but was {constructor.DeclaringType}.");
 			}
 		}
 	}

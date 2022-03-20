@@ -67,16 +67,18 @@ namespace Fub
 
 		public FubberBuilder<T> UseConstructor(ConstructorInfo constructor)
 		{
-			FixedConstructorResolver resolver = new(constructor);
-
-			constructorResolverFactory.RegisterResolver<T>(resolver);
-
-			return this;
+			return UseConstructor<T>(constructor);
 		}
 
-		public FubberBuilder<T> UseConstructor<TOtherType>(ConstructorInfo constructor)
+		public FubberBuilder<T> UseConstructor<TType>(ConstructorInfo constructor)
 		{
-			throw new NotImplementedException();
+			FubAssert.ValidConstructor<TType>(constructor);
+
+			FixedConstructorResolver resolver = new(constructor);
+
+			constructorResolverFactory.RegisterResolver<TType>(resolver);
+
+			return this;
 		}
 	}
 }

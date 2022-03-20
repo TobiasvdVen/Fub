@@ -3,6 +3,7 @@ using Fub.Tests.Models;
 using Fub.ValueProvisioning;
 using Moq;
 using System;
+using System.Reflection;
 using Xunit;
 
 namespace Fub.Tests
@@ -32,6 +33,16 @@ namespace Fub.Tests
 			fubber.Fub();
 
 			creator.Verify(c => c.Create<Empty.Class>(It.IsAny<IProspectValues>()));
+		}
+
+		[Fact]
+		public void UseConstructor_WithIncorrectConstructorInfo_Throws()
+		{
+			FubberBuilder<Empty.Class> builder = new();
+
+			ConstructorInfo invalidConstructor = typeof(TwoConstructors).GetConstructor(new Type[] { typeof(int) })!;
+
+			Assert.Throws<ArgumentException>(() => builder.UseConstructor(invalidConstructor));
 		}
 
 		public class SomeClass
