@@ -11,5 +11,10 @@ namespace Fub.Prospects
 		}
 
 		public PropertyInfo PropertyInfo { get; }
+
+		public override void SetValue(object target, object? value)
+		{
+			PropertyInfo.SetValue(target, value);
+		}
 	}
 }

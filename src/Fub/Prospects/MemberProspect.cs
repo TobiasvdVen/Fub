@@ -13,6 +13,8 @@ namespace Fub.Prospects
 
 		public MemberInfo MemberInfo { get; }
 
+		public abstract void SetValue(object target, object? value);
+
 		public override bool Equals(object? obj)
 		{
 			if (obj is null)

@@ -51,9 +51,9 @@ namespace Fub.Creation
 				throw new FubException($"Failed to construct object of type {type}, {nameof(Activator.CreateInstance)} returned null.");
 			}
 
-			IEnumerable<Prospect> prospects = prospector.GetMemberProspects(type);
+			IEnumerable<MemberProspect> prospects = prospector.GetMemberProspects(type);
 
-			InitializeProspects(fub, prospects, prospectValues);
+			InitializeMembers(fub, prospects, prospectValues);
 
 			return fub;
 		}
@@ -66,32 +66,27 @@ namespace Fub.Creation
 
 			foreach (ParameterProspect prospect in parameterProspects)
 			{
-				arguments.Add(GetValue(prospectValues, prospect));
+				object? value = GetValue(prospectValues, prospect);
+
+				arguments.Add(value);
 			}
 
 			object fub = constructor.Invoke(arguments.ToArray());
 
 			IEnumerable<MemberProspect> memberProspects = prospector.GetMemberProspects(type);
 
-			InitializeProspects(fub, memberProspects, prospectValues);
+			InitializeMembers(fub, memberProspects, prospectValues);
 
 			return fub;
 		}
 
-		private void InitializeProspects(object fub, IEnumerable<Prospect> prospects, IProspectValues prospectValues)
+		private void InitializeMembers(object fub, IEnumerable<MemberProspect> prospects, IProspectValues prospectValues)
 		{
-			foreach (Prospect prospect in prospects)
+			foreach (MemberProspect prospect in prospects)
 			{
 				object? value = GetValue(prospectValues, prospect);
 
-				if (prospect is PropertyProspect propertyProspect)
-				{
-					propertyProspect.PropertyInfo.SetValue(fub, value);
-				}
-				else if (prospect is FieldProspect fieldProspect)
-				{
-					fieldProspect.FieldInfo.SetValue(fub, value);
-				}
+				prospect.SetValue(fub, value);
 			}
 		}
 
