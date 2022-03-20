@@ -3,7 +3,7 @@ using Fub.ValueProvisioning.Randomization;
 using Moq;
 using Xunit;
 
-namespace Fub.Tests
+namespace Fub.Tests.Core
 {
 	public class RandomSelectionTests
 	{

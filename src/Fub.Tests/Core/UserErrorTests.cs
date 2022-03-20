@@ -6,7 +6,7 @@ using System;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace Fub.Tests
+namespace Fub.Tests.Core
 {
 	public class UserErrorTests
 	{

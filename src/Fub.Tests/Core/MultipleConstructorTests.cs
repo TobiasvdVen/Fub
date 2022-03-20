@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using Xunit;
 
-namespace Fub.Tests
+namespace Fub.Tests.Core
 {
 	public class MultipleConstructorTests
 	{

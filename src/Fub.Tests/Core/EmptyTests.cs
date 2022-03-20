@@ -1,7 +1,7 @@
 using Fub.Tests.Models;
 using Xunit;
 
-namespace Fub.Tests
+namespace Fub.Tests.Core
 {
 	public class EmptyTests
 	{
