@@ -3,6 +3,10 @@ using System.Reflection;
 
 namespace Fub.Prospects
 {
+	/// <summary>
+	/// A prospect represents a parameter, field or property of a type that requires initialization during creation
+	/// and may be overridden by the user through the Fubber or static Fub APIs.
+	/// </summary>
 	public abstract class Prospect
 	{
 		public Prospect(Type type, bool nullable)

@@ -6,6 +6,9 @@ namespace Fub.Utilities
 {
 	internal static class FubAssert
 	{
+		/// <summary>
+		/// Assert that type T is not an interface, Fub does not support creating instances of non-concrete types.
+		/// </summary>
 		internal static void ConcreteType<T>()
 		{
 			Type type = typeof(T);
@@ -16,6 +19,9 @@ namespace Fub.Utilities
 			}
 		}
 
+		/// <summary>
+		/// Assert that the expression provided refers to a type member.
+		/// </summary>
 		internal static MemberExpression MemberExpression<T, TMember>(Expression<Func<T, TMember>> expression)
 		{
 			if (expression.Body is MemberExpression memberExpression)
@@ -26,6 +32,9 @@ namespace Fub.Utilities
 			throw new ArgumentException($"Expression must be a {nameof(MemberExpression)}.");
 		}
 
+		/// <summary>
+		/// Assert that the given value is legal for the given member expression in a nullable context.
+		/// </summary>
 		internal static void NullSafe<TMember>(MemberExpression memberExpression, TMember value)
 		{
 			if (!memberExpression.Member.IsNullableMember() && value is null)
@@ -34,6 +43,9 @@ namespace Fub.Utilities
 			}
 		}
 
+		/// <summary>
+		/// Assert that the given constructor is actually for the given type.
+		/// </summary>
 		internal static void ValidConstructor<T>(ConstructorInfo constructor)
 		{
 			if (constructor.DeclaringType != typeof(T))

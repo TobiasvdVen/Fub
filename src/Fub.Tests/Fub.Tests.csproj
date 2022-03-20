@@ -32,4 +32,8 @@
     <ProjectReference Include="..\Fub\Fub.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Variety\" />
+  </ItemGroup>
+
 </Project>

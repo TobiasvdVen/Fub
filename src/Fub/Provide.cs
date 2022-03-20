@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Fub
 {
+	/// <summary>
+	/// Helpers for use with <c>FubberBuilder.For()</c>.
+	/// </summary>
 	public struct Provide
 	{
 		public static IProvideFrom<T> From<T>(IEnumerable<T> values)
