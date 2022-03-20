@@ -55,7 +55,7 @@ namespace Fub.Creation
 				throw new FubException($"Failed to construct object of type {type}, {nameof(Activator.CreateInstance)} returned null.");
 			}
 
-			IEnumerable<Prospect> prospects = prospector.GetMutableMemberProspects(type);
+			IEnumerable<Prospect> prospects = prospector.GetMemberProspects(type);
 
 			IDictionary<Prospect, object?> values = GetValues(prospectValues, prospects);
 
@@ -88,7 +88,7 @@ namespace Fub.Creation
 
 			object fub = constructor.Invoke(arguments.ToArray());
 
-			IEnumerable<MemberProspect> memberProspects = prospector.GetMutableMemberProspects(type);
+			IEnumerable<MemberProspect> memberProspects = prospector.GetMemberProspects(type);
 			IDictionary<Prospect, object?> memberValues = GetValues(prospectValues, memberProspects);
 
 			membersInitializer.Initialize(type, fub, memberValues);

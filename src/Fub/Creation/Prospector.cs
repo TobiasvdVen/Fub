@@ -11,42 +11,7 @@ namespace Fub.Creation
 	{
 		public IEnumerable<MemberProspect> GetMemberProspects(Type type)
 		{
-			return GetMemberProspects(type, skipImmutable: false);
-		}
-
-		public IEnumerable<MemberProspect> GetMutableMemberProspects(Type type)
-		{
-			return GetMemberProspects(type, skipImmutable: true);
-		}
-
-		public IEnumerable<ParameterProspect> GetParameterProspects(Type type, ConstructorInfo constructor)
-		{
-			IEnumerable<ParameterInfo> parameters = constructor.GetParameters();
-
-			IEnumerable<MemberProspect> memberProspects = GetMemberProspects(type);
-
-			IEnumerable<ParameterProspect> parameterProspects = parameters.Select(p =>
-			{
-				MemberProspect? associatedMember = memberProspects.FirstOrDefault(m => m.MemberInfo.Name.Equals(p.Name, StringComparison.OrdinalIgnoreCase));
-
-				if (associatedMember != null)
-				{
-					return new ParameterProspect(p, associatedMember.MemberInfo);
-				}
-				else
-				{
-					return new ParameterProspect(p);
-				}
-			});
-
-			return parameterProspects;
-		}
-
-		private IEnumerable<MemberProspect> GetMemberProspects(Type type, bool skipImmutable)
-		{
-			IEnumerable<MemberInfo> members = type
-				.GetMembers(BindingFlags.Public | BindingFlags.Instance)
-				.Where(m => m.IsPropertyOrField());
+			IEnumerable<MemberInfo> members = GetPropertiesAndFields(type);
 
 			List<MemberProspect> memberProspects = new();
 
@@ -59,7 +24,7 @@ namespace Fub.Creation
 
 				if (memberInfo is PropertyInfo property)
 				{
-					if (property.SetMethod == null && skipImmutable)
+					if (property.SetMethod == null)
 					{
 						continue;
 					}
@@ -69,6 +34,36 @@ namespace Fub.Creation
 			}
 
 			return memberProspects;
+		}
+
+		public IEnumerable<ParameterProspect> GetParameterProspects(Type type, ConstructorInfo constructor)
+		{
+			IEnumerable<ParameterInfo> parameters = constructor.GetParameters();
+
+			IEnumerable<MemberInfo> members = GetPropertiesAndFields(type);
+
+			IEnumerable<ParameterProspect> parameterProspects = parameters.Select(p =>
+			{
+				MemberInfo? associatedMember = members.FirstOrDefault(m => m.Name.Equals(p.Name, StringComparison.OrdinalIgnoreCase));
+
+				if (associatedMember != null)
+				{
+					return new ParameterProspect(p, associatedMember);
+				}
+				else
+				{
+					return new ParameterProspect(p);
+				}
+			});
+
+			return parameterProspects;
+		}
+
+		private IEnumerable<MemberInfo> GetPropertiesAndFields(Type type)
+		{
+			return type
+				.GetMembers(BindingFlags.Public | BindingFlags.Instance)
+				.Where(m => m.IsPropertyOrField());
 		}
 	}
 }

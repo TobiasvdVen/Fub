@@ -8,7 +8,6 @@ namespace Fub.Creation
 	internal interface IProspector
 	{
 		IEnumerable<MemberProspect> GetMemberProspects(Type type);
-		IEnumerable<MemberProspect> GetMutableMemberProspects(Type type);
 		IEnumerable<ParameterProspect> GetParameterProspects(Type type, ConstructorInfo constructor);
 	}
 }
