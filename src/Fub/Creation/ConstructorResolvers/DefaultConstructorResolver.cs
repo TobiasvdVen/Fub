@@ -4,11 +4,11 @@ using System.Reflection;
 
 namespace Fub.Creation.ConstructorResolvers
 {
-	internal class HeuristicConstructorResolver : IConstructorResolver
+	internal class DefaultConstructorResolver : IConstructorResolver
 	{
 		private readonly Type type;
 
-		public HeuristicConstructorResolver(Type type)
+		public DefaultConstructorResolver(Type type)
 		{
 			this.type = type;
 		}

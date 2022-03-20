@@ -18,7 +18,7 @@ namespace Fub.InternalTests.Creation
 
 			IConstructorResolver resolver = factory.CreateConstructorResolver<UnknownType>();
 
-			Assert.IsType<HeuristicConstructorResolver>(resolver);
+			Assert.IsType<DefaultConstructorResolver>(resolver);
 		}
 	}
 }

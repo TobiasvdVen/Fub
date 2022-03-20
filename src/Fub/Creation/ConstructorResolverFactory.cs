@@ -35,7 +35,7 @@ namespace Fub.Creation
 				return resolver;
 			}
 
-			return new HeuristicConstructorResolver(type);
+			return new DefaultConstructorResolver(type);
 		}
 
 		public void RegisterResolver<T>(IConstructorResolver resolver)
