@@ -32,7 +32,7 @@ namespace Fub.Tests.Core
 
 			fubber.Fub();
 
-			creator.Verify(c => c.Create<Empty.Class>(It.IsAny<IProspectValues>()));
+			creator.Verify(c => c.Create<Empty.Class>(It.IsAny<ProspectValues>()));
 		}
 
 		[Fact]
