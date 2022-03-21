@@ -13,20 +13,5 @@ namespace Fub.Prospects
 
 		public ParameterInfo ParameterInfo { get; }
 		public MemberInfo? MatchingMember { get; }
-
-		public override int GetHashCode()
-		{
-			return ParameterInfo.GetHashCode();
-		}
-
-		public override bool Equals(object? obj)
-		{
-			if (obj is ParameterProspect other)
-			{
-				return ParameterInfo.Equals(other.ParameterInfo);
-			}
-
-			return false;
-		}
 	}
 }
