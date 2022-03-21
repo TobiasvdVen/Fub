@@ -29,16 +29,16 @@ namespace Fub
 
 		public Fubber<T> Build()
 		{
-			IProspector prospector = new Prospector();
+			Prospector prospector = new();
 
-			FubbableChecker fubbableChecker = new(constructorResolverFactory, DefaultValues);
+			FubbableChecker fubbableChecker = new(constructorResolverFactory, prospector, DefaultValues);
 
-			if (fubbableChecker.IsFubbable(typeof(T), prospector) is FubbableError error)
+			if (fubbableChecker.IsFubbable<T>() is FubbableError error)
 			{
 				throw new InvalidOperationException(error.Message);
 			}
 
-			ICreator creator = Creator ?? new Creator(constructorResolverFactory, new Prospector());
+			ICreator creator = Creator ?? new Creator(constructorResolverFactory, prospector);
 
 			return new Fubber<T>(creator, DefaultValues);
 		}

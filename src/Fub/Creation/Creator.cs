@@ -11,9 +11,9 @@ namespace Fub.Creation
 	internal class Creator : ICreator
 	{
 		private readonly IConstructorResolverFactory constructorResolverFactory;
-		private readonly IProspector prospector;
+		private readonly Prospector prospector;
 
-		public Creator(IConstructorResolverFactory constructorResolverFactory, IProspector prospector)
+		public Creator(IConstructorResolverFactory constructorResolverFactory, Prospector prospector)
 		{
 			this.constructorResolverFactory = constructorResolverFactory;
 			this.prospector = prospector;

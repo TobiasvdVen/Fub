@@ -11,15 +11,22 @@ namespace Fub.Validation
 	internal class FubbableChecker
 	{
 		private readonly IConstructorResolverFactory constructorResolverFactory;
+		private readonly Prospector prospector;
 		private readonly IProspectValues defaultValues;
 
-		public FubbableChecker(IConstructorResolverFactory constructorResolverFactory, IProspectValues defaultValues)
+		public FubbableChecker(IConstructorResolverFactory constructorResolverFactory, Prospector prospector, IProspectValues defaultValues)
 		{
 			this.constructorResolverFactory = constructorResolverFactory;
+			this.prospector = prospector;
 			this.defaultValues = defaultValues;
 		}
 
-		public FubbableResult IsFubbable(Type type, IProspector prospector)
+		public FubbableResult IsFubbable<T>()
+		{
+			return IsFubbable(typeof(T));
+		}
+
+		public FubbableResult IsFubbable(Type type)
 		{
 			IEnumerable<Prospect> prospects = prospector.GetMemberProspects(type);
 
@@ -44,7 +51,7 @@ namespace Fub.Validation
 					continue;
 				}
 
-				if (IsFubbable(prospect.Type, prospector) is FubbableError error)
+				if (IsFubbable(prospect.Type) is FubbableError error)
 				{
 					return error;
 				}
