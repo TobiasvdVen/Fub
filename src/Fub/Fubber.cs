@@ -1,6 +1,6 @@
 ﻿using Fub.Creation;
 using Fub.Prospects;
-using Fub.Utilities;
+using Fub.Validation;
 using Fub.ValueProvisioning;
 using Fub.ValueProvisioning.ValueProviders;
 using System;

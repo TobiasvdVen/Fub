@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Fub.Utilities
+namespace Fub.Validation
 {
 	internal static class FubAssert
 	{

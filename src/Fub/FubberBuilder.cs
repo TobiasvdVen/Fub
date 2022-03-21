@@ -1,12 +1,10 @@
 ﻿using Fub.Creation;
 using Fub.Creation.ConstructorResolvers;
 using Fub.Prospects;
-using Fub.Utilities;
+using Fub.Validation;
 using Fub.ValueProvisioning;
 using Fub.ValueProvisioning.ValueProviders;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -33,38 +31,16 @@ namespace Fub
 		{
 			IProspector prospector = new Prospector();
 
-			CheckForUnspecifiedInterfaceProspects(typeof(T), prospector);
+			FubbableChecker fubbableChecker = new(constructorResolverFactory, DefaultValues);
+
+			if (fubbableChecker.IsFubbable(typeof(T), prospector) is FubbableError error)
+			{
+				throw new InvalidOperationException(error.Message);
+			}
 
 			ICreator creator = Creator ?? new Creator(constructorResolverFactory, new Prospector());
 
 			return new Fubber<T>(creator, DefaultValues);
-		}
-
-		private void CheckForUnspecifiedInterfaceProspects(Type type, IProspector prospector)
-		{
-			IEnumerable<Prospect> prospects = prospector.GetMemberProspects(type);
-
-			ConstructorInfo? constructor = constructorResolverFactory.CreateConstructorResolver(type).Resolve();
-
-			if (constructor is not null)
-			{
-				prospects = prospects.Concat(prospector.GetParameterProspects(type, constructor));
-			}
-
-			if (prospects.Any(p => p.Type.IsInterface && !DefaultValues.HasProvider(p)))
-			{
-				throw new InvalidOperationException();
-			}
-
-			foreach (Prospect prospect in prospects)
-			{
-				if (prospect.Type == type)
-				{
-					continue;
-				}
-
-				CheckForUnspecifiedInterfaceProspects(prospect.Type, prospector);
-			}
 		}
 
 		public FubberBuilder<T> Make<TMember>(Expression<Func<T, TMember>> expression, TMember value)

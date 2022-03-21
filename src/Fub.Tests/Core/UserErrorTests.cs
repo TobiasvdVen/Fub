@@ -101,7 +101,8 @@ namespace Fub.Tests.Core
 		{
 			FubberBuilder<HasNestedTypeWithInterfaceMember> builder = new();
 
-			Assert.Throws<InvalidOperationException>(() => builder.Build());
+			InvalidOperationException ex = Assert.Throws<InvalidOperationException>(() => builder.Build());
+			Assert.Contains(nameof(IMyInterface), ex.Message);
 		}
 
 		public class Recursion

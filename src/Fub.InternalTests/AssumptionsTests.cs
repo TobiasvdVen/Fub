@@ -1,4 +1,4 @@
-﻿using Fub.Utilities;
+﻿using Fub.Validation;
 using System.Linq;
 using System.Reflection;
 using Xunit;

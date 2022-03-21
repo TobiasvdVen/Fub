@@ -1,4 +1,4 @@
-﻿using Fub.Utilities;
+﻿using Fub.Validation;
 using System.Reflection;
 
 namespace Fub.Prospects

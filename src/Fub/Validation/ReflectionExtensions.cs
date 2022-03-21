@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Fub.Utilities
+namespace Fub.Validation
 {
 	internal static class ReflectionExtensions
 	{
