@@ -22,12 +22,11 @@ namespace Fub.Tests.Core
 		}
 
 		[Fact]
-		public void Fub_WithNoConstructorOverride_Throws()
+		public void Build_WithNoConstructorOverride_Throws()
 		{
 			FubberBuilder<TwoConstructors> builder = new();
-			Fubber<TwoConstructors> fubber = builder.Build();
 
-			Assert.Throws<InvalidOperationException>(() => fubber.Fub());
+			Assert.Throws<InvalidOperationException>(() => builder.Build());
 		}
 
 		public class HasNestedTwoConstructors
@@ -41,12 +40,11 @@ namespace Fub.Tests.Core
 		}
 
 		[Fact]
-		public void Fub_WithNoNestedConstructorOverride_Throws()
+		public void Build_WithNoNestedConstructorOverride_Throws()
 		{
 			FubberBuilder<HasNestedTwoConstructors> builder = new();
-			Fubber<HasNestedTwoConstructors> fubber = builder.Build();
 
-			Assert.Throws<InvalidOperationException>(() => fubber.Fub());
+			Assert.Throws<InvalidOperationException>(() => builder.Build());
 		}
 
 		[Fact]

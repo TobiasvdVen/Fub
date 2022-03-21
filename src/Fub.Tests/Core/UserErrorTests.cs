@@ -67,5 +67,57 @@ namespace Fub.Tests.Core
 				builder.Make(f => f.String, null);
 			});
 		}
+
+		public class HasInterfaceMember
+		{
+			public HasInterfaceMember(IMyInterface @interface)
+			{
+				Interface = @interface;
+			}
+
+			IMyInterface Interface { get; }
+		}
+
+		[Fact]
+		public void Build_WithoutOverrideForInterface_Throws()
+		{
+			FubberBuilder<HasInterfaceMember> builder = new();
+
+			Assert.Throws<InvalidOperationException>(() => builder.Build());
+		}
+
+		public class HasNestedTypeWithInterfaceMember
+		{
+			public HasNestedTypeWithInterfaceMember(HasInterfaceMember member)
+			{
+				Member = member;
+			}
+
+			HasInterfaceMember Member { get; }
+		}
+
+		[Fact]
+		public void Build_WithoutOverrideForInterfaceInNestedType_Throws()
+		{
+			FubberBuilder<HasNestedTypeWithInterfaceMember> builder = new();
+
+			Assert.Throws<InvalidOperationException>(() => builder.Build());
+		}
+
+		public class Recursion
+		{
+			public Recursion? RecursiveMember { get; set; }
+		}
+
+		[Fact]
+		public void Build_RecursiveMembers_NoStackOverflow()
+		{
+			FubberBuilder<Recursion> builder = new();
+			Fubber<Recursion> fubber = builder.Build();
+
+			Recursion fub = fubber.Fub();
+
+			Assert.Null(fub.RecursiveMember);
+		}
 	}
 }

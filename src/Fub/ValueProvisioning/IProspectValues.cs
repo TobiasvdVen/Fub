@@ -15,6 +15,7 @@ namespace Fub.ValueProvisioning
 #else
 		bool TryGetProvider(Prospect prospect, out IValueProvider? valueProvider);
 #endif
+		bool HasProvider(Prospect prospect);
 
 		void SetProvider(Prospect prospect, IValueProvider provider);
 

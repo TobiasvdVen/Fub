@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Fub.ValueProvisioning
 {
-	public class ProspectValues : IProspectValues
+	internal class ProspectValues : IProspectValues
 	{
 		public bool IsEmpty => !valueProviders.Any();
 
@@ -45,6 +45,11 @@ namespace Fub.ValueProvisioning
 			}
 
 			return valueProviders.TryGetValue(prospect, out valueProvider);
+		}
+
+		public bool HasProvider(Prospect prospect)
+		{
+			return TryGetProvider(prospect, out IValueProvider? _);
 		}
 	}
 }
