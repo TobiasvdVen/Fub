@@ -43,7 +43,7 @@ namespace Fub.Tests.Core
 		public void Fub_ForInterface_Throws()
 		{
 			Mock<ICreator> creator = new();
-			Mock<IProspectValues> prospectValues = new();
+			Mock<ProspectValues> prospectValues = new();
 
 			Assert.Throws<InvalidOperationException>(() => new Fubber<IMyInterface>(creator.Object, prospectValues.Object));
 		}

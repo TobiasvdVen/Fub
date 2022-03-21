@@ -22,11 +22,11 @@ namespace Fub.Creation
 		/// <summary>
 		/// Create an instance of type T, providing specific values for all or some prospects.
 		/// </summary>
-		T Create<T>(IProspectValues prospectValues) where T : notnull;
+		T Create<T>(ProspectValues prospectValues) where T : notnull;
 
 		/// <summary>
 		/// Create an instance of the given type, providing specific values for all or some prospects.
 		/// </summary>
-		object Create(Type type, IProspectValues prospectValues);
+		object Create(Type type, ProspectValues prospectValues);
 	}
 }

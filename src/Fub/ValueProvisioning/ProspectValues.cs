@@ -5,7 +5,12 @@ using System.Linq;
 
 namespace Fub.ValueProvisioning
 {
-	internal class ProspectValues : IProspectValues
+	/// <summary>
+	/// ProspectValues represents a collection of values to initialize a fub with during creation.
+	/// A base set of values can be specified while building a Fubber, which can be further overridden
+	/// through the Fubber or static Fub APIs.
+	/// </summary>
+	public class ProspectValues
 	{
 		public bool IsEmpty => !valueProviders.Any();
 
@@ -20,7 +25,7 @@ namespace Fub.ValueProvisioning
 			this.valueProviders = valueProviders;
 		}
 
-		public IProspectValues Clone()
+		public ProspectValues Clone()
 		{
 			return new ProspectValues(new Dictionary<Prospect, IValueProvider>(valueProviders));
 		}

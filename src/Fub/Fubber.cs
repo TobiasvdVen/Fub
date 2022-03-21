@@ -11,9 +11,9 @@ namespace Fub
 	public class Fubber<T> where T : notnull
 	{
 		private readonly ICreator creator;
-		private readonly IProspectValues defaultValues;
+		private readonly ProspectValues defaultValues;
 
-		public Fubber(ICreator creator, IProspectValues defaultValues)
+		public Fubber(ICreator creator, ProspectValues defaultValues)
 		{
 			FubAssert.ConcreteType<T>();
 
@@ -28,7 +28,7 @@ namespace Fub
 
 		public T Fub<TMember>(Expression<Func<T, TMember>> expression, TMember value)
 		{
-			IProspectValues prospectValues = defaultValues.Clone();
+			ProspectValues prospectValues = defaultValues.Clone();
 
 			OverrideAccordingToExpression(prospectValues, expression, value);
 
@@ -39,7 +39,7 @@ namespace Fub
 			Expression<Func<T, TMember1>> expression1, TMember1 value1,
 			Expression<Func<T, TMember2>> expression2, TMember2 value2)
 		{
-			IProspectValues prospectValues = defaultValues.Clone();
+			ProspectValues prospectValues = defaultValues.Clone();
 
 			OverrideAccordingToExpression(prospectValues, expression1, value1);
 			OverrideAccordingToExpression(prospectValues, expression2, value2);
@@ -47,7 +47,7 @@ namespace Fub
 			return creator.Create<T>(prospectValues);
 		}
 
-		private void OverrideAccordingToExpression<TMember>(IProspectValues prospectValues, Expression<Func<T, TMember>> expression, TMember value)
+		private void OverrideAccordingToExpression<TMember>(ProspectValues prospectValues, Expression<Func<T, TMember>> expression, TMember value)
 		{
 			MemberExpression memberExpression = FubAssert.MemberExpression(expression);
 			FubAssert.NullSafe(memberExpression, value);

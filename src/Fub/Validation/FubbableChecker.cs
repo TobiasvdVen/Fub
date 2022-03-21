@@ -12,9 +12,9 @@ namespace Fub.Validation
 	{
 		private readonly ConstructorResolverFactory constructorResolverFactory;
 		private readonly Prospector prospector;
-		private readonly IProspectValues defaultValues;
+		private readonly ProspectValues defaultValues;
 
-		public FubbableChecker(ConstructorResolverFactory constructorResolverFactory, Prospector prospector, IProspectValues defaultValues)
+		public FubbableChecker(ConstructorResolverFactory constructorResolverFactory, Prospector prospector, ProspectValues defaultValues)
 		{
 			this.constructorResolverFactory = constructorResolverFactory;
 			this.prospector = prospector;

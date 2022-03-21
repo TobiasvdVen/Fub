@@ -29,12 +29,12 @@ namespace Fub.Creation
 			return Create(type, new ProspectValues());
 		}
 
-		public T Create<T>(IProspectValues prospectValues) where T : notnull
+		public T Create<T>(ProspectValues prospectValues) where T : notnull
 		{
 			return (T)Create(typeof(T), prospectValues);
 		}
 
-		public object Create(Type type, IProspectValues prospectValues)
+		public object Create(Type type, ProspectValues prospectValues)
 		{
 			IConstructorResolver constructorResolver = constructorResolverFactory.CreateConstructorResolver(type);
 			ConstructorInfo? constructor = constructorResolver.Resolve();
@@ -57,7 +57,7 @@ namespace Fub.Creation
 			return fub;
 		}
 
-		private object CreateWithConstructor(Type type, IProspectValues prospectValues, ConstructorInfo constructor)
+		private object CreateWithConstructor(Type type, ProspectValues prospectValues, ConstructorInfo constructor)
 		{
 			IEnumerable<ParameterProspect> parameterProspects = prospector.GetParameterProspects(type, constructor);
 
@@ -73,7 +73,7 @@ namespace Fub.Creation
 			return constructor.Invoke(arguments.ToArray());
 		}
 
-		private void InitializeMembers(object fub, IEnumerable<MemberProspect> prospects, IProspectValues prospectValues)
+		private void InitializeMembers(object fub, IEnumerable<MemberProspect> prospects, ProspectValues prospectValues)
 		{
 			foreach (MemberProspect prospect in prospects)
 			{
@@ -83,7 +83,7 @@ namespace Fub.Creation
 			}
 		}
 
-		private object? GetValue(IProspectValues prospectValues, Prospect prospect)
+		private object? GetValue(ProspectValues prospectValues, Prospect prospect)
 		{
 			if (prospectValues.TryGetProvider(prospect, out IValueProvider? valueProvider))
 			{

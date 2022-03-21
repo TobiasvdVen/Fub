@@ -25,7 +25,7 @@ namespace Fub
 
 		public ICreator? Creator { get; private set; }
 
-		public IProspectValues DefaultValues { get; }
+		public ProspectValues DefaultValues { get; }
 
 		public Fubber<T> Build()
 		{
