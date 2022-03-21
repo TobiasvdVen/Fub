@@ -12,7 +12,7 @@ namespace Fub.InternalTests.Creation
 		}
 
 		[Fact]
-		public void GivenFactoryWhenNotFoundReturnHeuristicResolver()
+		public void CreateConstructorResolver_WhenNotFound_ReturnDefaultConstructorResolver()
 		{
 			ConstructorResolverFactory factory = new();
 

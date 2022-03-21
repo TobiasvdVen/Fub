@@ -13,7 +13,7 @@ namespace Fub.InternalTests
 		}
 
 		[Fact]
-		public void GivenMembersFromDifferentInstancesThenBeEqual()
+		public void MemberInfo_FromDifferentInstances_AreEqual()
 		{
 			Hello hello1 = new();
 			Hello hello2 = new();
@@ -35,7 +35,7 @@ namespace Fub.InternalTests
 		}
 
 		[Fact]
-		public void GivenNullablePropertyThenDetermineIsNullable()
+		public void IsNullable_GivenNullableProperty_ReturnsTrue()
 		{
 			PropertyInfo propertyInfo = typeof(NullableProperty).GetProperty(nameof(NullableProperty.Nullable))!;
 
@@ -53,7 +53,7 @@ namespace Fub.InternalTests
 		}
 
 		[Fact]
-		public void GivenNonNullablePropertyThenDetermineIsNotNullable()
+		public void IsNullable_GivenNonNullableProperty_ReturnsFalse()
 		{
 			PropertyInfo propertyInfo = typeof(NonNullableProperty).GetProperty(nameof(NonNullableProperty.NotNullable))!;
 
@@ -71,7 +71,7 @@ namespace Fub.InternalTests
 		}
 
 		[Fact]
-		public void GivenNullableFieldThenDetermineIsNullable()
+		public void IsNullable_GivenNullableField_ReturnsTrue()
 		{
 			FieldInfo fieldInfo = typeof(NullableField).GetField(nameof(NullableField.nullable))!;
 
@@ -89,7 +89,7 @@ namespace Fub.InternalTests
 		}
 
 		[Fact]
-		public void GivenNonNullableFieldThenDetermineIsNotNullable()
+		public void IsNullable_GivenNonNullableField_ReturnsFalse()
 		{
 			FieldInfo fieldInfo = typeof(NonNullableField).GetField(nameof(NonNullableField.notNullable))!;
 
@@ -97,7 +97,7 @@ namespace Fub.InternalTests
 		}
 
 		[Fact]
-		public void GivenNullableParameterThenDetermineIsNullable()
+		public void IsNullable_GivenNullableParameter_ReturnsTrue()
 		{
 			ConstructorInfo constructor = typeof(NullableField).GetConstructors().Single();
 
@@ -107,7 +107,7 @@ namespace Fub.InternalTests
 		}
 
 		[Fact]
-		public void GivenNonNullableParameterThenDetermineIsNotNullable()
+		public void IsNullable_GivenNonNullableParameter_ReturnsFalse()
 		{
 			ConstructorInfo constructor = typeof(NonNullableField).GetConstructors().Single();
 
@@ -129,7 +129,7 @@ namespace Fub.InternalTests
 		}
 
 		[Fact]
-		public void GivenBothNullableAndNotPropertyThenDetermineNullability()
+		public void IsNullable_GivenBothNullableAndNotProperty_DeterminesNullabilityForBoth()
 		{
 			PropertyInfo nullable = typeof(BothProperties).GetProperty(nameof(BothProperties.Nullable))!;
 			PropertyInfo notNullable = typeof(BothProperties).GetProperty(nameof(BothProperties.NotNullable))!;
