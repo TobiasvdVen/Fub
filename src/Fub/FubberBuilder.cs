@@ -18,12 +18,7 @@ namespace Fub
 
 		public FubberBuilder()
 		{
-			Type type = typeof(T);
-
-			if (type.IsInterface)
-			{
-				throw new InvalidOperationException($"Only concrete types can be Fubbed, {type.Name} is an interface.");
-			}
+			FubAssert.ConcreteType<T>();
 
 			constructorResolverFactory = new ConstructorResolverFactory();
 
