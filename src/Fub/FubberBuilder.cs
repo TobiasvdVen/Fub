@@ -31,7 +31,7 @@ namespace Fub
 		{
 			Prospector prospector = new();
 
-			FubbableChecker fubbableChecker = new(constructorResolverFactory, prospector, DefaultValues);
+			FubbableChecker fubbableChecker = new(constructorResolverFactory, prospector, DefaultValues, new InterfaceValueProviderFactory());
 
 			FubbableResult result = fubbableChecker.IsFubbable<T>();
 

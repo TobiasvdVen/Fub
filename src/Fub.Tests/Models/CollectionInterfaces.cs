@@ -5,7 +5,7 @@ namespace Fub.Tests.Models
 	public interface ICollectionInterfaces
 	{
 		IEnumerable<int> Enumerable { get; }
-		//		ICollection<string> Collection { get; }
+		ICollection<string> Collection { get; }
 		//		IList<float> List { get; }
 		//		ISet<double> Set { get; }
 		//		IDictionary<string, bool> Dictionary { get; }
@@ -23,8 +23,8 @@ namespace Fub.Tests.Models
 		public class Class : ICollectionInterfaces
 		{
 			public Class(
-				IEnumerable<int> enumerable
-				//				ICollection<string> collection,
+				IEnumerable<int> enumerable,
+				ICollection<string> collection
 				//				IList<float> list,
 				//				ISet<double> set,
 				//				IDictionary<string, bool> dictionary,
@@ -37,7 +37,7 @@ namespace Fub.Tests.Models
 				)
 			{
 				Enumerable = enumerable;
-				//				Collection = collection;
+				Collection = collection;
 				//				List = list;
 				//				Set = set;
 				//				Dictionary = dictionary;
@@ -51,7 +51,7 @@ namespace Fub.Tests.Models
 			}
 
 			public IEnumerable<int> Enumerable { get; }
-			//			public ICollection<string> Collection { get; }
+			public ICollection<string> Collection { get; }
 			//			public IList<float> List { get; }
 			//			public ISet<double> Set { get; }
 			//			public IDictionary<string, bool> Dictionary { get; }

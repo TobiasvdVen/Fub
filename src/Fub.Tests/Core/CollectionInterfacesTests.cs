@@ -11,7 +11,7 @@ namespace Fub.Tests.Core
 			CollectionInterfaces.Class fub = Fub<CollectionInterfaces.Class>.Simple();
 
 			Assert.NotNull(fub.Enumerable);
-			//			Assert.NotNull(fub.Collection);
+			Assert.NotNull(fub.Collection);
 			//			Assert.NotNull(fub.List);
 			//			Assert.NotNull(fub.Dictionary);
 			//			Assert.NotNull(fub.Set);
