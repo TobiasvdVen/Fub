@@ -40,6 +40,11 @@ namespace Fub.Creation
 				return resolver;
 			}
 
+			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+			{
+				return new ListConstructorResolver(type);
+			}
+
 			return new DefaultConstructorResolver(type);
 		}
 

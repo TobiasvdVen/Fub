@@ -38,6 +38,11 @@ namespace Fub.Creation
 						continue;
 					}
 
+					if (property.SetMethod.GetParameters().Length > 1)
+					{
+						continue;
+					}
+
 					memberProspects.Add(new PropertyProspect(property));
 				}
 			}

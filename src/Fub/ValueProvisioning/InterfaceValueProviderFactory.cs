@@ -1,4 +1,5 @@
-﻿using Fub.ValueProvisioning.ValueProviders;
+﻿using Fub.Creation;
+using Fub.ValueProvisioning.ValueProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,13 @@ namespace Fub.ValueProvisioning
 {
 	internal class InterfaceValueProviderFactory
 	{
+		private readonly ICreator creator;
+
+		public InterfaceValueProviderFactory(ICreator creator)
+		{
+			this.creator = creator;
+		}
+
 		public IValueProvider? Create(Type type)
 		{
 			if (!type.IsGenericType)
@@ -27,7 +35,10 @@ namespace Fub.ValueProvisioning
 			}
 			else if (genericType == typeof(ICollection<>))
 			{
-				return null;
+				Type list = typeof(List<>).MakeGenericType(type.GenericTypeArguments[0]);
+				object? value = creator.Create(list);
+
+				return new FixedValueProvider(value);
 			}
 
 			return null;

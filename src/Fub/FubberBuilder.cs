@@ -30,8 +30,9 @@ namespace Fub
 		public Fubber<T> Build()
 		{
 			Prospector prospector = new();
+			ICreator creator = Creator ?? new Creator(constructorResolverFactory, prospector);
 
-			FubbableChecker fubbableChecker = new(constructorResolverFactory, prospector, DefaultValues, new InterfaceValueProviderFactory());
+			FubbableChecker fubbableChecker = new(constructorResolverFactory, prospector, DefaultValues, new InterfaceValueProviderFactory(creator));
 
 			FubbableResult result = fubbableChecker.IsFubbable<T>();
 
@@ -51,7 +52,6 @@ namespace Fub
 					break;
 			}
 
-			ICreator creator = Creator ?? new Creator(constructorResolverFactory, prospector);
 
 			return new Fubber<T>(creator, finalValues);
 		}
