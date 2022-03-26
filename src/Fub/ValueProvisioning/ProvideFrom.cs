@@ -5,7 +5,11 @@ using System.Collections.Generic;
 
 namespace Fub.ValueProvisioning
 {
-	internal class ProvideFrom<T> : IProvideFrom<T>
+	/// <summary>
+	/// ProvideFrom is used to specify whether the values passed in a <c>Provide.From()</c> call 
+	/// should be selected randomly or sequentially.
+	/// </summary>
+	public class ProvideFrom<T>
 	{
 		private readonly IEnumerable<T> values;
 

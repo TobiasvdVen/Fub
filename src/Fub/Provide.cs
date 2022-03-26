@@ -10,7 +10,7 @@ namespace Fub
 	/// </summary>
 	public struct Provide
 	{
-		public static IProvideFrom<T> From<T>(IEnumerable<T> values)
+		public static ProvideFrom<T> From<T>(IEnumerable<T> values)
 		{
 			return new ProvideFrom<T>(values);
 		}
