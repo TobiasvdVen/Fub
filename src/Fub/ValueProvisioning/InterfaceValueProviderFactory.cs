@@ -2,8 +2,6 @@
 using Fub.ValueProvisioning.ValueProviders;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace Fub.ValueProvisioning
 {
@@ -18,27 +16,37 @@ namespace Fub.ValueProvisioning
 
 		public IValueProvider? Create(Type type)
 		{
-			if (!type.IsGenericType)
+			if (type.IsGenericType)
 			{
-				return null;
-			}
+				Type genericType = type.GetGenericTypeDefinition();
 
-			Type genericType = type.GetGenericTypeDefinition();
-			if (genericType == typeof(IEnumerable<>))
-			{
-				object? emptyEnumerable = typeof(Enumerable)
-					.GetMethod("Empty", BindingFlags.Static | BindingFlags.Public)!
-					.MakeGenericMethod(type.GenericTypeArguments[0])
-					.Invoke(null, null);
+				if (genericType == typeof(IEnumerable<>) ||
+					genericType == typeof(ICollection<>) ||
+					genericType == typeof(IList<>) ||
+					genericType == typeof(IReadOnlyCollection<>) ||
+					genericType == typeof(IReadOnlyList<>))
+				{
+					Type list = typeof(List<>).MakeGenericType(type.GenericTypeArguments[0]);
+					object? value = creator.Create(list);
 
-				return new FixedValueProvider(emptyEnumerable);
-			}
-			else if (genericType == typeof(ICollection<>))
-			{
-				Type list = typeof(List<>).MakeGenericType(type.GenericTypeArguments[0]);
-				object? value = creator.Create(list);
+					return new FixedValueProvider(value);
+				}
+				else if (genericType == typeof(ISet<>))
+				{
+					Type set = typeof(HashSet<>).MakeGenericType(type.GenericTypeArguments[0]);
+					object? value = creator.Create(set);
 
-				return new FixedValueProvider(value);
+					return new FixedValueProvider(value);
+				}
+#if NET5_0_OR_GREATER
+				else if (genericType == typeof(IReadOnlySet<>))
+				{
+					Type set = typeof(HashSet<>).MakeGenericType(type.GenericTypeArguments[0]);
+					object? value = creator.Create(set);
+
+					return new FixedValueProvider(value);
+				}
+#endif
 			}
 
 			return null;

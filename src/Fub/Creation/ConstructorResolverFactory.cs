@@ -40,9 +40,16 @@ namespace Fub.Creation
 				return resolver;
 			}
 
-			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
+			if (type.IsGenericType)
 			{
-				return new ListConstructorResolver(type);
+				if (type.GetGenericTypeDefinition() == typeof(List<>))
+				{
+					return new ListConstructorResolver(type);
+				}
+				else if (type.GetGenericTypeDefinition() == typeof(HashSet<>))
+				{
+					return new HashSetConstructorResolver(type);
+				}
 			}
 
 			return new DefaultConstructorResolver(type);
