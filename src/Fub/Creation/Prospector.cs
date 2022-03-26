@@ -60,11 +60,11 @@ namespace Fub.Creation
 
 				if (associatedMember != null)
 				{
-					return new ParameterProspect(p, associatedMember);
+					return new ParameterProspect(p, constructor, associatedMember);
 				}
 				else
 				{
-					return new ParameterProspect(p);
+					return new ParameterProspect(p, constructor);
 				}
 			});
 

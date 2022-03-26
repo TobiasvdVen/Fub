@@ -33,14 +33,27 @@ namespace Fub
 
 			FubbableChecker fubbableChecker = new(constructorResolverFactory, prospector, DefaultValues);
 
-			if (fubbableChecker.IsFubbable<T>() is FubbableError error)
+			FubbableResult result = fubbableChecker.IsFubbable<T>();
+
+			ProspectValues finalValues;
+
+			switch (result)
 			{
-				throw new InvalidOperationException(error.Message);
+				case FubbableError error:
+					throw new InvalidOperationException(error.Message);
+
+				case FubbableNeedsDefaults needsDefaults:
+					finalValues = ProspectValues.Combine(DefaultValues, needsDefaults.RequiredDefaults);
+					break;
+
+				default:
+					finalValues = DefaultValues;
+					break;
 			}
 
 			ICreator creator = Creator ?? new Creator(constructorResolverFactory, prospector);
 
-			return new Fubber<T>(creator, DefaultValues);
+			return new Fubber<T>(creator, finalValues);
 		}
 
 		public FubberBuilder<T> Make<TMember>(Expression<Func<T, TMember>> expression, TMember value)

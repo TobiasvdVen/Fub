@@ -1,6 +1,7 @@
 ﻿using Fub.Prospects;
 using Fub.ValueProvisioning;
 using Fub.ValueProvisioning.ValueProviders;
+using System;
 using System.Reflection;
 using Xunit;
 
@@ -93,7 +94,7 @@ namespace Fub.InternalTests.ValueProvidersTests
 		[Fact]
 		public void TryGetProvider_WithProspect_WhenSetWithOtherTypeProspectButSameInterface_ReturnsFalse()
 		{
-			ProspectValues prospectValues = new ProspectValues();
+			ProspectValues prospectValues = new();
 
 			PropertyInfo property = typeof(Base).GetProperty(nameof(Base.SomeBoolean))!;
 			PropertyInfo otherProperty = typeof(OtherButSameInterface).GetProperty(nameof(OtherButSameInterface.SomeBoolean))!;
@@ -104,6 +105,72 @@ namespace Fub.InternalTests.ValueProvidersTests
 			prospectValues.SetProvider(prospect, new FixedValueProvider(true));
 
 			Assert.False(prospectValues.TryGetProvider(otherProspect, out IValueProvider? valueProvider));
+		}
+
+		[Fact]
+		public void Combine_WithEmptyValues_ReturnsUnchanged()
+		{
+			ProspectValues prospectValues = new();
+			ProspectValues other = new();
+
+			PropertyInfo property = typeof(Base).GetProperty(nameof(Base.SomeBoolean))!;
+			Prospect prospect = new PropertyProspect(property);
+
+			prospectValues.SetProvider(prospect, new FixedValueProvider(false));
+
+			ProspectValues combined = ProspectValues.Combine(prospectValues, other);
+
+			Assert.False(ReferenceEquals(prospectValues, combined));
+			Assert.Equal(prospectValues, combined);
+		}
+
+		[Fact]
+		public void Combine_WithIdenticalProspect_Throws()
+		{
+			ProspectValues prospectValues = new();
+			ProspectValues other = new();
+
+			PropertyInfo property = typeof(Base).GetProperty(nameof(Base.SomeBoolean))!;
+			Prospect prospect = new PropertyProspect(property);
+			Prospect sameProspect = new PropertyProspect(property);
+
+			prospectValues.SetProvider(prospect, new FixedValueProvider(false));
+			other.SetProvider(sameProspect, new FixedValueProvider(true));
+
+			Assert.Throws<ArgumentException>(() => ProspectValues.Combine(prospectValues, other));
+		}
+
+		class Combine
+		{
+			public Combine(string text, Base @base)
+			{
+				Text = text;
+				Base = @base;
+			}
+
+			public string Text { get; }
+			public Base Base { get; }
+		}
+
+		[Fact]
+		public void Combine_WithDistinctProspects_ReturnsCombined()
+		{
+			ProspectValues prospectValues = new();
+			ProspectValues other = new();
+
+			PropertyInfo textProperty = typeof(Combine).GetProperty(nameof(Combine.Text))!;
+			PropertyInfo baseProperty = typeof(Combine).GetProperty(nameof(Combine.Base))!;
+
+			Prospect textProspect = new PropertyProspect(textProperty);
+			Prospect baseProspect = new PropertyProspect(baseProperty);
+
+			prospectValues.SetProvider(textProspect, new FixedValueProvider("Text"));
+			other.SetProvider(baseProspect, new FixedValueProvider(new Base()));
+
+			ProspectValues combined = ProspectValues.Combine(prospectValues, other);
+
+			Assert.True(combined.HasProvider(textProspect));
+			Assert.True(combined.HasProvider(baseProspect));
 		}
 	}
 }

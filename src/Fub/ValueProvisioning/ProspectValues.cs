@@ -1,4 +1,5 @@
 ﻿using Fub.Prospects;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Fub.ValueProvisioning
 	/// A base set of values can be specified while building a Fubber, which can be further overridden
 	/// through the Fubber or static Fub APIs.
 	/// </summary>
-	public class ProspectValues
+	public class ProspectValues : IEnumerable<KeyValuePair<Prospect, IValueProvider>>
 	{
 		public bool IsEmpty => !valueProviders.Any();
 
@@ -30,6 +31,13 @@ namespace Fub.ValueProvisioning
 			return new ProspectValues(new Dictionary<Prospect, IValueProvider>(valueProviders));
 		}
 
+		public static ProspectValues Combine(ProspectValues a, ProspectValues b)
+		{
+			Dictionary<Prospect, IValueProvider> result = a.Union(b).ToDictionary(e => e.Key, e => e.Value);
+
+			return new ProspectValues(result);
+		}
+
 		public void SetProvider(Prospect prospect, IValueProvider provider)
 		{
 			valueProviders[prospect] = provider;
@@ -45,7 +53,12 @@ namespace Fub.ValueProvisioning
 			{
 				if (parameterProspect.MatchingMember != null)
 				{
-					return valueProviders.TryGetValue(Prospect.FromMember(parameterProspect.MatchingMember!), out valueProvider);
+					if (valueProviders.TryGetValue(Prospect.FromMember(parameterProspect.MatchingMember!), out valueProvider))
+					{
+						return true;
+					}
+
+					return valueProviders.TryGetValue(parameterProspect, out valueProvider);
 				}
 			}
 
@@ -55,6 +68,16 @@ namespace Fub.ValueProvisioning
 		public bool HasProvider(Prospect prospect)
 		{
 			return TryGetProvider(prospect, out IValueProvider? _);
+		}
+
+		public IEnumerator<KeyValuePair<Prospect, IValueProvider>> GetEnumerator()
+		{
+			return valueProviders.GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return ((IEnumerable)valueProviders).GetEnumerator();
 		}
 	}
 }
