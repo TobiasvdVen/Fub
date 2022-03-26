@@ -2,6 +2,7 @@
 using Fub.ValueProvisioning;
 using Fub.ValueProvisioning.ValueProviders;
 using System;
+using System.Linq;
 using System.Reflection;
 using Xunit;
 
@@ -20,15 +21,15 @@ namespace Fub.InternalTests.ValueProvidersTests
 		}
 
 		[Fact]
-		public void IsEmpty_WhenNothingSet_ReturnsTrue()
+		public void Any_WhenNothingSet_ReturnsFalse()
 		{
 			ProspectValues prospectValues = new ProspectValues();
 
-			Assert.True(prospectValues.IsEmpty);
+			Assert.False(prospectValues.Any());
 		}
 
 		[Fact]
-		public void IsEmpty_WhenProviderSet_ReturnsFalse()
+		public void Any_WhenProviderSet_ReturnsTrue()
 		{
 			ProspectValues prospectValues = new ProspectValues();
 
@@ -36,7 +37,7 @@ namespace Fub.InternalTests.ValueProvidersTests
 
 			prospectValues.SetProvider(new PropertyProspect(propertyInfo), new FixedValueProvider(2));
 
-			Assert.False(prospectValues.IsEmpty);
+			Assert.True(prospectValues.Any());
 		}
 
 		public interface IBase

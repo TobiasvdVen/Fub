@@ -13,8 +13,6 @@ namespace Fub.ValueProvisioning
 	/// </summary>
 	public class ProspectValues : IEnumerable<KeyValuePair<Prospect, IValueProvider>>
 	{
-		public bool IsEmpty => !valueProviders.Any();
-
 		private readonly IDictionary<Prospect, IValueProvider> valueProviders;
 
 		public ProspectValues() : this(new Dictionary<Prospect, IValueProvider>())

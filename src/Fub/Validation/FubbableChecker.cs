@@ -67,7 +67,7 @@ namespace Fub.Validation
 				}
 			}
 
-			if (!requiredDefaults.IsEmpty)
+			if (requiredDefaults.Any())
 			{
 				return new FubbableNeedsDefaults(requiredDefaults);
 			}
