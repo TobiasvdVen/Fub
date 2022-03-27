@@ -27,32 +27,28 @@ namespace Fub.ValueProvisioning
 					genericType == typeof(IReadOnlyList<>))
 				{
 					Type list = typeof(List<>).MakeGenericType(type.GenericTypeArguments[0]);
-					object? value = creator.Create(list);
 
-					return new FixedValueProvider(value);
+					return new FactoryMethodProvider<object>(() => creator.Create(list));
 				}
 				else if (genericType == typeof(ISet<>))
 				{
 					Type set = typeof(HashSet<>).MakeGenericType(type.GenericTypeArguments[0]);
-					object? value = creator.Create(set);
 
-					return new FixedValueProvider(value);
+					return new FactoryMethodProvider<object>(() => creator.Create(set));
 				}
 				else if (genericType == typeof(IDictionary<,>) ||
 						 genericType == typeof(IReadOnlyDictionary<,>))
 				{
 					Type dictionary = typeof(Dictionary<,>).MakeGenericType(type.GenericTypeArguments[0], type.GenericTypeArguments[1]);
-					object? value = creator.Create(dictionary);
 
-					return new FixedValueProvider(value);
+					return new FactoryMethodProvider<object>(() => creator.Create(dictionary));
 				}
 #if NET5_0_OR_GREATER
 				else if (genericType == typeof(IReadOnlySet<>))
 				{
 					Type set = typeof(HashSet<>).MakeGenericType(type.GenericTypeArguments[0]);
-					object? value = creator.Create(set);
 
-					return new FixedValueProvider(value);
+					return new FactoryMethodProvider<object>(() => creator.Create(set));
 				}
 #endif
 			}
