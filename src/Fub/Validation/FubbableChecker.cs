@@ -41,7 +41,7 @@ namespace Fub.Validation
 		{
 			IEnumerable<Prospect> prospects = prospector.GetMemberProspects(type);
 
-			ConstructorInfo? constructor = constructorResolverFactory.CreateConstructorResolver(type).Resolve();
+			ConstructorInfo? constructor = constructorResolverFactory.CreateConstructorResolver(type).Resolve(type);
 
 			if (constructor is not null)
 			{

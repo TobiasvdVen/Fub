@@ -6,16 +6,9 @@ namespace Fub.Creation.ConstructorResolvers
 {
 	internal class ListConstructorResolver : IConstructorResolver
 	{
-		private readonly ConstructorInfo constructor;
-
-		public ListConstructorResolver(Type listType)
+		public ConstructorInfo? Resolve(Type type)
 		{
-			constructor = listType.GetConstructors().First();
-		}
-
-		public ConstructorInfo? Resolve()
-		{
-			return constructor;
+			return type.GetConstructors().First();
 		}
 	}
 }

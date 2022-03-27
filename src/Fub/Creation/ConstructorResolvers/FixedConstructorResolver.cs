@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace Fub.Creation.ConstructorResolvers
 {
@@ -11,7 +12,7 @@ namespace Fub.Creation.ConstructorResolvers
 			this.constructor = constructor;
 		}
 
-		public ConstructorInfo? Resolve()
+		public ConstructorInfo? Resolve(Type _)
 		{
 			return constructor;
 		}

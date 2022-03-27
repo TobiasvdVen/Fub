@@ -10,8 +10,8 @@ namespace Fub.Tests.Models
 		ISet<double> Set { get; }
 		IReadOnlyCollection<byte> ReadOnlyCollection { get; }
 		IReadOnlyList<short> ReadOnlyList { get; }
-		//		IDictionary<string, bool> Dictionary { get; }
-		//		IReadOnlyDictionary<long, StringInt.Class> ReadOnlyDictionary { get; }
+		IDictionary<string, bool> Dictionary { get; }
+		IReadOnlyDictionary<long, StringInt.Class> ReadOnlyDictionary { get; }
 
 #if NET5_0_OR_GREATER
 		IReadOnlySet<uint> ReadOnlySet { get; }
@@ -28,9 +28,9 @@ namespace Fub.Tests.Models
 				IList<float> list,
 				ISet<double> set,
 				IReadOnlyCollection<byte> readOnlyCollection,
-				IReadOnlyList<short> readOnlyList
-				//				IDictionary<string, bool> dictionary,
-				//				IReadOnlyDictionary<long, StringInt.Class> readOnlyDictionary
+				IReadOnlyList<short> readOnlyList,
+				IDictionary<string, bool> dictionary,
+				IReadOnlyDictionary<long, StringInt.Class> readOnlyDictionary
 #if NET5_0_OR_GREATER
 				, IReadOnlySet<uint> readOnlySet
 #endif
@@ -42,8 +42,8 @@ namespace Fub.Tests.Models
 				Set = set;
 				ReadOnlyCollection = readOnlyCollection;
 				ReadOnlyList = readOnlyList;
-				//				Dictionary = dictionary;
-				//				ReadOnlyDictionary = readOnlyDictionary;
+				Dictionary = dictionary;
+				ReadOnlyDictionary = readOnlyDictionary;
 
 #if NET5_0_OR_GREATER
 				ReadOnlySet = readOnlySet;
@@ -56,8 +56,8 @@ namespace Fub.Tests.Models
 			public ISet<double> Set { get; }
 			public IReadOnlyCollection<byte> ReadOnlyCollection { get; }
 			public IReadOnlyList<short> ReadOnlyList { get; }
-			//			public IDictionary<string, bool> Dictionary { get; }
-			//			public IReadOnlyDictionary<long, StringInt.Class> ReadOnlyDictionary { get; }
+			public IDictionary<string, bool> Dictionary { get; }
+			public IReadOnlyDictionary<long, StringInt.Class> ReadOnlyDictionary { get; }
 
 #if NET5_0_OR_GREATER
 

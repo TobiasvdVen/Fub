@@ -38,6 +38,14 @@ namespace Fub.ValueProvisioning
 
 					return new FixedValueProvider(value);
 				}
+				else if (genericType == typeof(IDictionary<,>) ||
+						 genericType == typeof(IReadOnlyDictionary<,>))
+				{
+					Type dictionary = typeof(Dictionary<,>).MakeGenericType(type.GenericTypeArguments[0], type.GenericTypeArguments[1]);
+					object? value = creator.Create(dictionary);
+
+					return new FixedValueProvider(value);
+				}
 #if NET5_0_OR_GREATER
 				else if (genericType == typeof(IReadOnlySet<>))
 				{

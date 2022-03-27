@@ -1,6 +1,7 @@
 ﻿using Fub.Creation.ConstructorResolvers;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Fub.Creation
 {
@@ -11,20 +12,16 @@ namespace Fub.Creation
 	/// </summary>
 	internal class ConstructorResolverFactory
 	{
+		private readonly DefaultConstructorResolver defaultConstructorResolver;
 		private readonly IDictionary<Type, IConstructorResolver> resolvers;
 
 		public ConstructorResolverFactory() : this(new Dictionary<Type, IConstructorResolver>())
 		{
 		}
 
-		private ConstructorResolverFactory(IDictionary<Type, IConstructorResolver> resolvers)
+		public ConstructorResolverFactory(IDictionary<Type, IConstructorResolver> resolvers)
 		{
-			resolvers.Add(typeof(string), new StringConstructorResolver());
-			resolvers.Add(typeof(decimal), new DecimalConstructorResolver());
-			resolvers.Add(typeof(IntPtr), new IntPtrConstructorResolver());
-			resolvers.Add(typeof(UIntPtr), new UIntPtrConstructorResolver());
-			resolvers.Add(typeof(DateTime), new DateTimeConstructorResolver());
-
+			defaultConstructorResolver = new DefaultConstructorResolver();
 			this.resolvers = resolvers;
 		}
 
@@ -35,24 +32,17 @@ namespace Fub.Creation
 
 		public IConstructorResolver CreateConstructorResolver(Type type)
 		{
+			if (type.IsGenericType)
+			{
+				type = type.GetGenericTypeDefinition();
+			}
+
 			if (resolvers.TryGetValue(type, out IConstructorResolver? resolver))
 			{
 				return resolver;
 			}
 
-			if (type.IsGenericType)
-			{
-				if (type.GetGenericTypeDefinition() == typeof(List<>))
-				{
-					return new ListConstructorResolver(type);
-				}
-				else if (type.GetGenericTypeDefinition() == typeof(HashSet<>))
-				{
-					return new HashSetConstructorResolver(type);
-				}
-			}
-
-			return new DefaultConstructorResolver(type);
+			return defaultConstructorResolver;
 		}
 
 		public void RegisterResolver<T>(IConstructorResolver resolver)
@@ -63,6 +53,16 @@ namespace Fub.Creation
 		public void RegisterResolver(Type type, IConstructorResolver resolver)
 		{
 			resolvers[type] = resolver;
+		}
+
+		public void RegisterConstructor<T>(ConstructorInfo constructor)
+		{
+			RegisterConstructor(typeof(T), constructor);
+		}
+
+		public void RegisterConstructor(Type type, ConstructorInfo constructor)
+		{
+			RegisterResolver(type, new FixedConstructorResolver(constructor));
 		}
 	}
 }

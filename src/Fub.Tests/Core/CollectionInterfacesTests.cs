@@ -13,11 +13,11 @@ namespace Fub.Tests.Core
 			Assert.NotNull(fub.Enumerable);
 			Assert.NotNull(fub.Collection);
 			Assert.NotNull(fub.List);
-			//			Assert.NotNull(fub.Dictionary);
 			Assert.NotNull(fub.Set);
 			Assert.NotNull(fub.ReadOnlyCollection);
 			Assert.NotNull(fub.ReadOnlyList);
-			//			Assert.NotNull(fub.ReadOnlyDictionary);
+			Assert.NotNull(fub.Dictionary);
+			Assert.NotNull(fub.ReadOnlyDictionary);
 
 #if NET5_0_OR_GREATER
 			Assert.NotNull(fub.ReadOnlySet);

@@ -29,6 +29,9 @@ namespace Fub
 
 		public Fubber<T> Build()
 		{
+			DefaultConstructorRegistrar constructorRegistrar = new();
+			constructorRegistrar.Register(constructorResolverFactory);
+
 			Prospector prospector = new();
 			ICreator creator = Creator ?? new Creator(constructorResolverFactory, prospector);
 

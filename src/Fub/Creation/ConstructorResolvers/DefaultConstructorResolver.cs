@@ -6,14 +6,7 @@ namespace Fub.Creation.ConstructorResolvers
 {
 	internal class DefaultConstructorResolver : IConstructorResolver
 	{
-		private readonly Type type;
-
-		public DefaultConstructorResolver(Type type)
-		{
-			this.type = type;
-		}
-
-		public virtual ConstructorInfo? Resolve()
+		public virtual ConstructorInfo? Resolve(Type type)
 		{
 			ConstructorInfo[] constructors = type.GetConstructors();
 

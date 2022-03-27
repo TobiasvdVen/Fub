@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Fub.Creation.ConstructorResolvers
 {
-	internal class HashSetConstructorResolver : IConstructorResolver
+	internal class DictionaryConstructorResolver : IConstructorResolver
 	{
 		public ConstructorInfo? Resolve(Type type)
 		{

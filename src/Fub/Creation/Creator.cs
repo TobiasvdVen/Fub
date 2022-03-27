@@ -37,7 +37,7 @@ namespace Fub.Creation
 		public object Create(Type type, ProspectValues prospectValues)
 		{
 			IConstructorResolver constructorResolver = constructorResolverFactory.CreateConstructorResolver(type);
-			ConstructorInfo? constructor = constructorResolver.Resolve();
+			ConstructorInfo? constructor = constructorResolver.Resolve(type);
 
 			object fub;
 

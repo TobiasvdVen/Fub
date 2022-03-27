@@ -20,7 +20,12 @@ namespace Fub.InternalTests.Creation
 		[Fact]
 		public void Create_String_ReturnsEmptyString()
 		{
-			ICreator creator = new Creator(new ConstructorResolverFactory(), new Prospector());
+			ConstructorResolverFactory constructorResolverFactory = new();
+			DefaultConstructorRegistrar registrar = new();
+
+			registrar.Register(constructorResolverFactory);
+
+			ICreator creator = new Creator(constructorResolverFactory, new Prospector());
 
 			// Non-nullable strings should not be null by default
 			// Ensure that created strings are empty by default as an alternative
