@@ -1,9 +1,10 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 
 namespace Fub.Creation.ConstructorResolvers
 {
 	public interface IConstructorResolver
 	{
-		ConstructorInfo? Resolve();
+		ConstructorInfo? Resolve(Type type);
 	}
 }
