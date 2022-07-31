@@ -46,6 +46,7 @@ namespace Fub.Tests.Core
 			Assert.Equal(string.Empty, fub.String);
 
 			Assert.Equal(default, fub.DateTime);
+			Assert.Equal(default, fub.Guid);
 		}
 	}
 }

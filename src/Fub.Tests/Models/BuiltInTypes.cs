@@ -22,13 +22,14 @@ namespace Fub.Tests.Models
 		object Object { get; }
 		string String { get; }
 		DateTime DateTime { get; }
+		Guid Guid { get; }
 	}
 
 	public static class BuiltInTypes
 	{
 		public class Class : IBuiltInTypes
 		{
-			public Class(bool @bool, byte @byte, sbyte sByte, char @char, decimal @decimal, double @double, float @float, int @int, uint uInt, nint nInt, nuint nUInt, long @long, ulong uLong, short @short, ushort uShort, object @object, string @string, DateTime dateTime)
+			public Class(bool @bool, byte @byte, sbyte sByte, char @char, decimal @decimal, double @double, float @float, int @int, uint uInt, nint nInt, nuint nUInt, long @long, ulong uLong, short @short, ushort uShort, object @object, string @string, DateTime dateTime, Guid guid)
 			{
 				Bool = @bool;
 				Byte = @byte;
@@ -48,6 +49,7 @@ namespace Fub.Tests.Models
 				Object = @object;
 				String = @string;
 				DateTime = dateTime;
+				Guid = guid;
 			}
 
 			public bool Bool { get; }
@@ -68,14 +70,16 @@ namespace Fub.Tests.Models
 			public object Object { get; }
 			public string String { get; }
 			public DateTime DateTime { get; }
+			public Guid Guid { get; }
 		}
 
 		public class MostlyMutableClass : IBuiltInTypes
 		{
-			public MostlyMutableClass(object @object, string @string)
+			public MostlyMutableClass(object @object, string @string, Guid guid)
 			{
 				Object = @object;
 				String = @string;
+				Guid = guid;
 			}
 
 			public bool Bool { get; set; }
@@ -96,6 +100,7 @@ namespace Fub.Tests.Models
 			public object Object { get; }
 			public string String { get; }
 			public DateTime DateTime { get; }
+			public Guid Guid { get; }
 		}
 	}
 }
