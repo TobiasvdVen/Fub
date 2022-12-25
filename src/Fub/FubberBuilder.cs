@@ -5,6 +5,7 @@ using Fub.Validation;
 using Fub.ValueProvisioning;
 using Fub.ValueProvisioning.ValueProviders;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -99,6 +100,26 @@ namespace Fub
 			constructorResolverFactory.RegisterResolver<TType>(resolver);
 
 			return this;
+		}
+
+		public FubberBuilder<T> UseConstructor(params Type[] constructorParameterTypes)
+		{
+			return UseConstructor<T>(constructorParameterTypes);
+		}
+
+		public FubberBuilder<T> UseConstructor<TType>(params Type[] constructorParameterTypes)
+		{
+			ConstructorInfo? constructor = typeof(TType).GetConstructor(constructorParameterTypes);
+
+			if (constructor == null)
+			{
+				bool multiple = constructorParameterTypes.Length > 1;
+				string parameterOrPlural = multiple ? "parameters" : "parameter";
+				string parameterTypes = string.Join(", ", constructorParameterTypes.Select(t => t.Name));
+				throw new ArgumentException($"No constructor could be found on type {typeof(TType).Name} with {parameterOrPlural} of type {parameterTypes}");
+			}
+
+			return UseConstructor<T>(constructor);
 		}
 	}
 }

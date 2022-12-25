@@ -63,5 +63,32 @@ namespace Fub.Tests.Core
 			// The default constructor sets Value to 1, so if this is 0 we used the specified constructor instead
 			Assert.Equal(0, fub.TwoConstructors.Value);
 		}
+
+		[Fact]
+		public void FubSimple_WithNoConstructorOverride_Throws()
+		{
+			Assert.Throws<InvalidOperationException>(() => Fub<TwoConstructors>.Simple());
+		}
+
+		[Fact]
+		public void Build_WithConstructorOverrideEasyOverload_UsesSpecifiedConstructor()
+		{
+			FubberBuilder<TwoConstructors> builder = new();
+
+			Fubber<TwoConstructors> fubber = builder.UseConstructor(typeof(int)).Build();
+
+			TwoConstructors fub = fubber.Fub();
+
+			// The default constructor sets Value to 1, so if this is 0 we used the specified constructor instead
+			Assert.Equal(0, fub.Value);
+		}
+
+		[Fact]
+		public void Build_WithInvalidConstructorOverrideEasyOverload_Throws()
+		{
+			FubberBuilder<TwoConstructors> builder = new();
+
+			Assert.Throws<ArgumentException>(() => builder.UseConstructor(typeof(string)));
+		}
 	}
 }
